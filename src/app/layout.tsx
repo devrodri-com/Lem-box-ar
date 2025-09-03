@@ -18,7 +18,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LEM-BOX — Logística Miami ↔ Uruguay",
+  metadataBase: new URL("https://lem-box.com.uy"),
+  title: {
+    default: "LEM-BOX — Logística Miami ↔ Uruguay",
+    template: "%s | LEM-BOX Uruguay",
+  },
   description:
     "Envíos aéreos semanales desde Miami. Recepción, consolidación y entrega en Uruguay con atención personalizada.",
   alternates: {
@@ -28,6 +32,35 @@ export const metadata: Metadata = {
       "es-AR": "https://lem-box.com.ar",
       "x-default": "https://lem-box.com",
     },
+  },
+  themeColor: "#02120F",
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    other: [
+      { rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#02120F" },
+    ],
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "LEM-BOX Uruguay",
+    title: "LEM-BOX Uruguay — Envíos rápidos desde Miami",
+    description:
+      "Activa tu dirección en Miami y recibí tus compras con seguimiento y fotos del contenido.",
+    images: [{ url: "/og-lem-box-uy.png", width: 1200, height: 630, alt: "LEM-BOX Uruguay" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LEM-BOX Uruguay — Envíos rápidos desde Miami",
+    description:
+      "Envíos semanales desde Miami a Uruguay. Recepción, consolidación y seguimiento con fotos.",
+    images: ["/og-lem-box-uy.png"],
   },
 };
 

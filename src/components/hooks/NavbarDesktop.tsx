@@ -53,6 +53,11 @@ export default function NavbarDesktop() {
     }
   }, [pathname]);
 
+  // Typed CSS variable for nav height
+  const navStyle: CSSProperties & { ["--nav-h"]?: string } = {
+    ["--nav-h"]: isShrunk ? "64px" : "80px",
+  };
+
   return (
     <header
       role="banner"
@@ -68,7 +73,7 @@ export default function NavbarDesktop() {
           ? "shadow-[0_8px_24px_-12px_rgba(0,0,0,0.35)] border-b border-white/10"
           : "shadow-none border-b border-transparent",
       ].join(" ")}
-      style={{ ["--nav-h" as any]: isShrunk ? "64px" : "80px" } as CSSProperties}
+      style={navStyle}
     >
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 md:px-6">
         {/* Logo */}

@@ -3,24 +3,27 @@
 
 import Image from "next/image";
 import * as Icons from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export type InfoCardItem = {
   title: string;
-  description: string;
+  description?: string;
   icon?: string; // nombre del ícono de lucide-react
   step?: number; // usado cuando variant = "steps"
   imageSrc?: string; // usado cuando variant = "media"
+};
+
+export type InfoCardsGridProps = {
+  items: InfoCardItem[];
+  variant?: "default" | "steps" | "media";
+  className?: string;
 };
 
 export default function InfoCardsGrid({
   items,
   variant = "default",
   className = "",
-}: {
-  items: InfoCardItem[];
-  variant?: "default" | "steps" | "media";
-  className?: string;
-}) {
+}: InfoCardsGridProps) {
   return (
     <div
       className={[
@@ -30,7 +33,9 @@ export default function InfoCardsGrid({
       role="list"
     >
       {items.map((it, i) => {
-        const IconCmp = (it.icon && (Icons as any)[it.icon]) || Icons.Info;
+        const iconMap = Icons as unknown as Record<string, LucideIcon>;
+        const IconCmp: LucideIcon =
+          it.icon && iconMap[it.icon] ? iconMap[it.icon] : Icons.Info;
 
         if (variant === "media" && it.imageSrc) {
           // Card con imagen de cabecera (brand-friendly)

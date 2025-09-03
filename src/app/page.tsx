@@ -10,6 +10,9 @@ import HowItWorks from "@/components/HowItWorks";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 
+
+type Benefit = { title: string; description?: string; icon?: string };
+
 export default async function Page() {
   const headersList = await headers();
   const host = headersList.get("host") || "";
@@ -40,10 +43,14 @@ export default async function Page() {
           <div className="mt-10">
             <InfoCardsGrid
               variant="media"
-              items={(content.benefits as any).map((b: any, idx: number) => ({
-                ...b,
-                imageSrc: `/media/beneficios/${idx + 1}.webp`,
-              }))}
+              items={(content.benefits as readonly Benefit[]).map((b, idx) => {
+                return {
+                  title: String(b.title),
+                  description: b.description ?? "",
+                  icon: b.icon ?? "",
+                  imageSrc: `/media/beneficios/${idx + 1}.webp`,
+                };
+              })}
             />
           </div>
         </div>

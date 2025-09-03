@@ -61,10 +61,10 @@ export async function POST(req: Request) {
 
     console.log("RESEND_OK", sent?.data?.id);
     return NextResponse.json({ ok: true, message: "¡Gracias! Te respondemos en horas hábiles.", id: sent?.data?.id });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("RESEND_ERR", err);
     return NextResponse.json(
-      { ok: false, message: "Error al enviar. Probá por WhatsApp.", detail: err?.message ?? err },
+      { ok: false, message: "Error al enviar. Probá por WhatsApp.", detail: err instanceof Error ? err.message : String(err) },
       { status: 500 }
     );
   }
