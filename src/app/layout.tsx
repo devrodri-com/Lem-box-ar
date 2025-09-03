@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | LEM-BOX Uruguay",
   },
   description:
-    "Envíos aéreos semanales desde Miami. Recepción, consolidación y entrega en Uruguay con atención personalizada.",
+    "Comprás en EE.UU. y recibís en Uruguay. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
   alternates: {
     canonical: "https://lem-box.com.uy",
     languages: {
@@ -52,15 +52,15 @@ export const metadata: Metadata = {
     siteName: "LEM-BOX Uruguay",
     title: "LEM-BOX Uruguay — Envíos rápidos desde Miami",
     description:
-      "Activa tu dirección en Miami y recibí tus compras con seguimiento y fotos del contenido.",
-    images: [{ url: "/og-lem-box-uy.png", width: 1200, height: 630, alt: "LEM-BOX Uruguay" }],
+      "Comprás en EE.UU. y recibís en Uruguay. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
+    images: [{ url: "/og-lem-box-uy.jpg?v=3", width: 1200, height: 630, alt: "LEM-BOX Uruguay" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "LEM-BOX Uruguay — Envíos rápidos desde Miami",
     description:
-      "Envíos semanales desde Miami a Uruguay. Recepción, consolidación y seguimiento con fotos.",
-    images: ["/og-lem-box-uy.png"],
+      "Comprás en EE.UU. y recibís en Uruguay. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
+    images: ["/og-lem-box-uy.jpg?v=3"],
   },
 };
 
