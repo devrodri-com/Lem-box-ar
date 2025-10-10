@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Servicios | LEM-BOX",
   description:
-    "Servicios logísticos integrales en EE.UU. y envíos internacionales. Infraestructura en Miami, servicios personalizados, fulfillment 3PL y despachos a Uruguay y dentro de EE.UU.",
+    "Servicios logísticos integrales en EE.UU. y envíos internacionales. Infraestructura en Miami, servicios personalizados, fulfillment 3PL y despachos a Argentina y dentro de EE.UU.",
 };
 
 export default function ServiciosPage() {
@@ -113,7 +113,7 @@ export default function ServiciosPage() {
           <div className="md:col-span-7">
             <div className="mb-3 h-px w-10 bg-emerald-300/20"></div>
             <ul className="space-y-2 text-sm leading-relaxed text-emerald-100/85">
-              <li>• Envíos semanales a Uruguay, sin mínimos de carga</li>
+              <li>• Envíos semanales a Argentina, sin mínimos de carga</li>
               <li>• Entregas rápidas en todo EE.UU. con tarifas competitivas</li>
               <li>• Logística inversa: devoluciones o reenvíos a proveedores o terceros</li>
               <li>• Flujo de trabajo ajustado a cada cliente</li>
@@ -155,10 +155,10 @@ export default function ServiciosPage() {
                   <td className="py-3">Etiqueta + guía única</td>
                 </tr>
                 <tr className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pr-4">Envíos a Uruguay</td>
-                  <td className="py-3 pr-4">Montevideo + Interior</td>
-                  <td className="py-3 pr-4 font-[tabular-nums]">Entrega estimada: 2–4 días hábiles desde cutoff</td>
-                  <td className="py-3 pr-4 font-[tabular-nums]">Martes 12h · Jueves 15h</td>
+                  <td className="py-3 pr-4">Envíos a Argentina</td>
+                  <td className="py-3 pr-4">A todo el país</td>
+                  <td className="py-3 pr-4 font-[tabular-nums]">Entrega estimada: 4 días hábiles desde cutoff</td>
+                  <td className="py-3 pr-4 font-[tabular-nums]">Jueves 15h</td>
                   <td className="py-3">Tracking online</td>
                 </tr>
                 <tr className="hover:bg-white/[0.02] transition-colors">
@@ -171,7 +171,7 @@ export default function ServiciosPage() {
               </tbody>
             </table>
             <p className="mt-3 text-xs text-emerald-100/60">
-              Operamos con 2 vuelos semanales a Uruguay: la carga de martes 12h vuela miércoles y llega a Uruguay jueves-viernes; la carga de jueves 15h vuela domingo y llega lunes-martes. Sujeto a disponibilidad y condiciones operativas.
+              Operamos con vuelos semanales a Argentina: Sujeto a disponibilidad y condiciones operativas.
             </p>
           </div>
         </div>
@@ -193,7 +193,7 @@ export default function ServiciosPage() {
             ¿Listo para optimizar tu logística?
           </h2>
           <p className="mt-3 text-[15px] text-emerald-100/80 leading-relaxed">
-            Con LEM-BOX tenés un socio logístico en Miami para crecer en Uruguay y EE.UU.
+            Con LEM-BOX tenés un socio logístico en Miami para crecer en Argentina y EE.UU.
           </p>
           <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
             <a

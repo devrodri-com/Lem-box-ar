@@ -28,10 +28,10 @@ export default function Hero() {
 
       <div className="px-6 w-full max-w-7xl">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-tight text-white max-w-[18ch] mx-auto">
-          Tu puente entre EE.UU. y Uruguay
+          Tu puente entre EE.UU. y Argentina
         </h1>
         <p className="mt-5 text-white/80 max-w-[48ch] mx-auto leading-relaxed">
-          Recepción y consolidación en Miami; ahorrás volumen y recibís en Uruguay en tiempo y forma. Atención humana y seguimiento claro.
+          Recepción y consolidación en Miami; ahorrás volumen y recibís en Argentina en tiempo y forma. Atención humana y seguimiento claro.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a

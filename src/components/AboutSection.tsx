@@ -21,7 +21,7 @@ export default async function AboutSection() {
         {/* Columna de texto */}
         <div className="col-span-12 lg:col-span-6">
           <span className="inline-block text-sm text-white/70 tracking-normal">
-            10 años en logística import-export EE.UU. ↔ {country === "uy" ? "Uruguay" : "Argentina"}
+            10 años en logística import-export EE.UU. ↔ {country === "ar" ? "Uruguay" : "Argentina"}
           </span>
           <h2
             id="quienes-somos-title"
@@ -30,12 +30,12 @@ export default async function AboutSection() {
             {content.about.title}
           </h2>
           <p className="mt-6 text-white/90 text-[16px] sm:text-[17px] md:text-[18px] leading-[1.6] tracking-[0.01em] max-w-[34ch] md:max-w-[44ch]">
-            Somos operadores logísticos con base en Miami. Recibimos tus compras de EE.UU., las verificamos y las consolidamos para que lleguen a Uruguay en tiempo y forma. Nuestro equipo atiende por WhatsApp y email durante todo el proceso.
+            Somos operadores logísticos con base en Miami. Recibimos tus compras de EE.UU., las verificamos y las consolidamos para que lleguen a Argentina en tiempo y forma. Nuestro equipo atiende por WhatsApp y email durante todo el proceso.
           </p>
           <ul className="mt-5 space-y-2 text-white/85 text-[15px] sm:text-[16px] leading-[1.6]">
             <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Recepción en almacén propio en Miami</li>
             <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Consolidación inteligente para ahorrar volumen</li>
-            <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Salidas aéreas semanales hacia Montevideo</li>
+            <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Salidas aéreas semanales hacia Argentina</li>
             <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Trazabilidad y atención humana en español</li>
             <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Logística para terceros en EE.UU. (almacenaje y preparación de pedidos)</li>
           </ul>

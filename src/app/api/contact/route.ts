@@ -4,9 +4,13 @@ import { Resend } from "resend";
 
 const API_KEY = process.env.RESEND_API_KEY || "";
 const FROM = process.env.RESEND_FROM || "LEM-BOX <onboarding@resend.dev>";
-const DEBUG_TO = process.env.RESEND_DEBUG_TO || "";
 
-const resend = new Resend(API_KEY);
+const DEBUG_TO = process.env.RESEND_DEBUG_TO || "";
+const CONTACT_TO = process.env.CONTACT_TO || "";
+
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
@@ -17,6 +21,8 @@ export async function POST(req: Request) {
         { status: 500 }
       );
     }
+
+    const resend = new Resend(API_KEY); // lazy init en runtime
 
     const { name, email, message, company } = await req.json();
 
@@ -40,27 +46,53 @@ export async function POST(req: Request) {
         { status: 400 }
       );
 
-    const recipients = ["info@lem-box.com"];
+    // destinatarios desde ENV (permite lista separada por comas)
+    const recipients = (CONTACT_TO || "info@lem-box.com")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
     if (DEBUG_TO && !recipients.includes(DEBUG_TO)) recipients.push(DEBUG_TO);
 
-    const sent = await resend.emails.send({
-      from: FROM,                // remitente (ideal: verificado en Resend)
-      to: recipients,            // destinatarios
-      replyTo: email,            // para responder al cliente
+    // primer intento con el FROM configurado
+    const primaryFrom = FROM;
+    let result = await resend.emails.send({
+      from: primaryFrom,
+      to: recipients,
+      replyTo: email,
       subject: `Contacto LEM-BOX: ${name}`,
       text: `Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`,
     });
 
-    if (!sent?.data?.id) {
-      console.error("RESEND_NO_ID", sent);
+    // si Resend rechaza (p.ej., dominio no verificado), reintenta usando onboarding
+    if (!result?.data?.id) {
+      const fallbackFrom = "LEM-BOX <onboarding@resend.dev>";
+      if (primaryFrom !== fallbackFrom) {
+        console.warn("RESEND_RETRY_WITH_ONBOARDING", result?.error);
+        result = await resend.emails.send({
+          from: fallbackFrom,
+          to: recipients,
+          replyTo: email,
+          subject: `Contacto LEM-BOX: ${name}`,
+          text: `Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${message}`,
+        });
+      }
+    }
+
+    if (!result?.data?.id) {
+      console.error("RESEND_NO_ID", result);
       return NextResponse.json(
-        { ok: false, message: "Resend no devolvió ID. Revisá Logs en Resend.", detail: sent },
+        {
+          ok: false,
+          message:
+            "No pudimos enviar el email ahora. Escribinos por WhatsApp y lo vemos.",
+          detail: result?.error ?? result,
+        },
         { status: 502 }
       );
     }
 
-    console.log("RESEND_OK", sent?.data?.id);
-    return NextResponse.json({ ok: true, message: "¡Gracias! Te respondemos en horas hábiles.", id: sent?.data?.id });
+    console.log("RESEND_OK", result.data.id);
+    return NextResponse.json({ ok: true, message: "¡Gracias! Te respondemos en horas hábiles.", id: result.data.id });
   } catch (err: unknown) {
     console.error("RESEND_ERR", err);
     return NextResponse.json(

@@ -20,11 +20,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://lem-box.com.uy"),
   title: {
-    default: "LEM-BOX — Logística Miami ↔ Uruguay",
-    template: "%s | LEM-BOX Uruguay",
+    default: "LEM-BOX — Logística Miami ↔ Argentina",
+    template: "%s | LEM-BOX Argentina",
   },
   description:
-    "Comprás en EE.UU. y recibís en Uruguay. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
+    "Comprás en EE.UU. y recibís en Argentina. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
   alternates: {
     canonical: "https://lem-box.com.uy",
     languages: {
@@ -49,17 +49,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    siteName: "LEM-BOX Uruguay",
-    title: "LEM-BOX Uruguay — Envíos rápidos desde Miami",
+    siteName: "LEM-BOX Argentina",
+    title: "LEM-BOX Argentina — Envíos rápidos desde Miami",
     description:
-      "Comprás en EE.UU. y recibís en Uruguay. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
-    images: [{ url: "/og-lem-box-uy.jpg?v=3", width: 1200, height: 630, alt: "LEM-BOX Uruguay" }],
+      "Comprás en EE.UU. y recibís en Argentina. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
+    images: [{ url: "/og-lem-box-uy.jpg?v=3", width: 1200, height: 630, alt: "LEM-BOX Argentina" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "LEM-BOX Uruguay — Envíos rápidos desde Miami",
+    title: "LEM-BOX Argentina — Envíos rápidos desde Miami",
     description:
-      "Comprás en EE.UU. y recibís en Uruguay. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
+      "Comprás en EE.UU. y recibís en Argentina. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
     images: ["/og-lem-box-uy.jpg?v=3"],
   },
 };

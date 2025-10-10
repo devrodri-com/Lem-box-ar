@@ -14,7 +14,7 @@ export default function Footer() {
               <div className="text-white font-semibold text-xl tracking-tight">LEM-BOX</div>
             </div>
             <p className="mt-2 text-sm leading-relaxed">
-              Gestión integral desde Miami: envíos rápidos a Uruguay y logística para tu e-commerce en EE. UU.
+              Gestión integral desde Miami: envíos rápidos a Argentina y logística para tu e-commerce en EE. UU.
             </p>
           </div>
   

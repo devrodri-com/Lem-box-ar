@@ -9,10 +9,10 @@ export const siteContentByCountry = {
   uy: {
     about: {
       title: "Quiénes somos",
-      subtitle: "Somos operador logístico desde Miami → Uruguay.",
+      subtitle: "Somos operador logístico desde Miami → Argentina.",
       body: [
         "Recepción y consolidación en Miami Gardens.",
-        "Salidas aéreas semanales a Montevideo.",
+        "Salidas aéreas semanales a Argentina.",
       ],
     },
     benefits: [
@@ -51,7 +51,7 @@ export const siteContentByCountry = {
       {
         step: 1,
         title: "Registro y creación de cuenta",
-        description: "Crea tu cuenta para empezar a enviar paquetes desde Miami a Uruguay.",
+        description: "Crea tu cuenta para empezar a enviar paquetes desde Miami a Argentina.",
         icon: "user-plus",
       },
       {
@@ -63,20 +63,20 @@ export const siteContentByCountry = {
       {
         step: 3,
         title: "Envío aéreo semanal",
-        description: "Realizamos envíos a Montevideo cada semana para garantizar rapidez.",
+        description: "Realizamos envíos a Argentina cada semana para garantizar rapidez.",
         icon: "plane",
       },
       {
         step: 4,
         title: "Entrega en destino",
-        description: "Recibe tus paquetes en la dirección que elijas en Uruguay.",
+        description: "Recibe tus paquetes en la dirección que elijas en Argentina.",
         icon: "home",
       },
     ],
     faqs: [
       {
         q: "¿Cuánto tarda el envío?",
-        a: "El envío tarda aproximadamente 7 días desde Miami hasta Montevideo.",
+        a: "El envío tarda aproximadamente 7 días desde Miami hasta Argentina.",
       },
       {
         q: "¿Puedo rastrear mi paquete?",
