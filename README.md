@@ -1,39 +1,39 @@
 # 🛫 LEM-BOX V2 📦
 
-Proyecto de la nueva web de **LEM-BOX** desarrollado con **Next.js (App Router)**, **TypeScript** y **TailwindCSS**, con enfoque **mobile-first** y branding oscuro (#005F40 / #EB6619).
+Project for the new **LEM-BOX** website developed with **Next.js (App Router)**, **TypeScript**, and **TailwindCSS**, with a **mobile-first** approach and dark branding (#005F40 / #EB6619).
 
 ---
 
-## 🌐 Multipaís
+## 🌐 Multi-country
 
-- **lem-box.com**: Selector de país para redirigir a las versiones locales.  
-- **lem-box.com.uy**: Versión terminada, con contenido y diseño adaptados para Uruguay.  
-- **lem-box.com.ar**: Versión pendiente, similar a la de Uruguay pero con cambios en textos y ajustes específicos para Argentina.
+- **lem-box.com**: Country selector to redirect to local versions.  
+- **lem-box.com.uy**: Completed version, with content and design adapted for Uruguay.  
+- **lem-box.com.ar**: Pending version, similar to the Uruguay one but with text and specific adjustments for Argentina.
 
 ---
 
-## 🚀 Estado actual
+## 🚀 Current status
 
 - **Header (desktop + mobile)**  
   - Glassmorphism (`bg-[#005f40]/10 + backdrop-blur`)  
-  - Menú mobile en portal con overlay dinámico, cierre por ESC y focus return  
-  - Scroll-shrink y scroll-spy implementados  
+  - Mobile menu in portal with dynamic overlay, ESC close, and focus return  
+  - Scroll-shrink and scroll-spy implemented  
 
 - **Hero**  
-  - 100dvh, fondo dinámico, overlay/fade inferior  
-  - CTA principal a registro (`https://lem-box.com/Tracking/web/#/register`)  
-  - Micro-animación en el indicador de scroll  
+  - 100dvh, dynamic background, bottom overlay/fade  
+  - Main CTA to registration (`https://lem-box.com/Tracking/web/#/register`)  
+  - Micro-animation on scroll indicator  
 
-- **Sección “Quiénes somos”**  
-  - Fondo verde oscuro (#02120F)  
-  - Texto reescrito y bullets claros  
-  - Imagen/logo metálico en PNG para máxima calidad  
+- **“About Us” section**  
+  - Dark green background (#02120F)  
+  - Rewritten text and clear bullets  
+  - Metallic logo/image in PNG for maximum quality  
 
-- **Sección “Beneficios”**  
-  - Grid 3×2 con 6 beneficios  
-  - Cards con imágenes generadas en SORA (WebP optimizadas)  
-  - Hover lift + shadow premium Apple-like  
-  - Etiqueta superior “Beneficios” estilizada, H2 consistente  
+- **“Benefits” section**  
+  - 3×2 grid with 6 benefits  
+  - Cards with images generated in SORA (optimized WebP)  
+  - Hover lift + premium Apple-like shadow  
+  - Top label “Benefits” styled, consistent H2  
 
 ---
 
@@ -42,62 +42,60 @@ Proyecto de la nueva web de **LEM-BOX** desarrollado con **Next.js (App Router)*
 - [Next.js 15 (App Router)](https://nextjs.org)  
 - [TypeScript](https://www.typescriptlang.org/)  
 - [TailwindCSS](https://tailwindcss.com)  
-- [next/image](https://nextjs.org/docs/app/building-your-application/optimizing/images) para optimización de imágenes  
-- [Cloudinary](https://cloudinary.com) para media estática (próximamente)  
+- [next/image](https://nextjs.org/docs/app/building-your-application/optimizing/images) for image optimization  
+- [Cloudinary](https://cloudinary.com) for static media (coming soon)  
 
 ---
 
-## ▶️ Desarrollo
+## ▶️ Development
 
-Correr en local:
-
-```bash
+Run locally:
 npm run dev
-# o
+# or
 yarn dev
-```
 
-Abrir [http://localhost:3000](http://localhost:3000).
-
----
-
-## 🌍 Próximos pasos
-
-- Pulir sección **Cómo funciona** con estilo consistente a Beneficios  
-- Crear página **/servicios** con cards y descripciones  
-- Integrar **tracking público** y base de datos (Supabase/Postgres)  
-- Integrar automatizaciones vía **n8n**  
-- Desarrollar estructura multipaís:  
-  - Implementar selector de país en **lem-box.com**  
-  - Finalizar versión **.ar**, basada en la versión **.uy** con ajustes de textos y contenido local  
+Open [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## 📌 Notas
+## 🌍 Next steps
 
-Este README se irá actualizando con cada fase del proyecto.
+- Refine **How it works** section with a style consistent with Benefits  
+- Create **/services** page with cards and descriptions  
+- Integrate **public tracking** and database (Supabase/Postgres)  
+- Integrate automations via **n8n**  
+- Develop multi-country structure:  
+  - Implement country selector on **lem-box.com**  
+  - Finalize **.ar** version, based on **.uy** with localized text and content adjustments  
 
 ---
 
-## 📝 Prompt de desarrollo
+## 📌 Notes
 
-El proyecto LEM-BOX V2 está diseñado con un enfoque mobile-first, utilizando Next.js 15 con App Router, TypeScript y TailwindCSS para mantener un código moderno, escalable y optimizado. Se ha implementado un branding oscuro con colores clave: verde oscuro (#02120F) para fondos y naranja vibrante (#EB6619) para acentos y llamadas a la acción.
+This README will be updated with each project phase.
 
-Se ha completado el diseño y desarrollo de:
+---
 
-- Header con glassmorphism, menú mobile accesible y comportamiento avanzado (overlay, cierre por ESC, focus return).  
-- Hero full viewport con fondo dinámico y microanimación para guiar al usuario.  
-- Sección “Quiénes somos” con contenido claro y diseño visualmente atractivo, incluyendo imágenes metálicas en PNG para alta calidad.  
-- Sección “Beneficios” con grid 3x2, cards con imágenes optimizadas y efectos premium en hover.  
+## 📝 Development
 
-En progreso y próximos desarrollos:
+The **LEM-BOX V2** project is designed with a **mobile-first** approach, using **Next.js 15** with **App Router**, **TypeScript**, and **TailwindCSS** to maintain modern, scalable, and optimized code.  
+A **dark branding theme** has been implemented with key colors: dark green (#02120F) for backgrounds and vibrant orange (#EB6619) for accents and calls to action.
 
-- Sección “Cómo funciona” con estilo coherente a Beneficios.  
-- Página de servicios con cards y descripciones.  
-- Integración de tracking público y base de datos con Supabase/Postgres para análisis y gestión de usuarios.  
-- Automatizaciones vía n8n para optimizar flujos internos.  
-- Arquitectura multipaís, con selector en lem-box.com y versiones locales para Uruguay (.uy) y Argentina (.ar), adaptando contenido y textos según mercado.  
+### ✅ Completed design and development
 
-Las directrices de diseño mantienen la coherencia visual con un branding oscuro, priorizando la usabilidad y experiencia móvil, con detalles gráficos y microinteracciones que aportan dinamismo y profesionalismo.
+- Header with glassmorphism, accessible mobile menu, and advanced behavior (overlay, ESC close, focus return).  
+- Full viewport Hero with dynamic background and microanimation to guide the user.  
+- “About Us” section with clear content and visually appealing design, including high-quality metallic PNG images.  
+- “Benefits” section with 3x2 grid, optimized image cards, and premium hover effects.  
 
-Este documento se actualizará conforme avance el desarrollo y se implementen nuevas funcionalidades y mejoras.
+### 🔄 In progress and upcoming developments
+
+- “How it works” section with consistent style to Benefits.  
+- Services page with cards and descriptions.  
+- Integration of public tracking and database using Supabase/Postgres for analytics and user management.  
+- Automations via n8n to optimize internal workflows.  
+- Multi-country architecture, with a selector on **lem-box.com** and local versions for **Uruguay (.uy)** and **Argentina (.ar)**, adapting content and text per market.  
+
+The **design guidelines** maintain visual consistency with dark branding, prioritizing usability and mobile experience, with graphic details and microinteractions that add dynamism and professionalism.
+
+This document will be updated as development progresses and new functionalities and improvements are implemented.
