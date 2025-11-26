@@ -52,7 +52,7 @@ export default function NavbarMobile() {
       <div className="h-full px-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" aria-label="Ir al inicio" className="inline-flex items-center">
-          <img src="/logo.png" alt="LEM-BOX" className="h-7 w-auto" />
+          <img src="/logo.png" alt="LEM-BOX" className="h-10 w-auto" />
         </Link>
 
         {/* Trigger */}
@@ -84,7 +84,7 @@ export default function NavbarMobile() {
           <div className="fixed inset-0 z-[9999] bg-[#0f1a17] text-white flex flex-col" role="dialog" aria-modal="true">
             <div className="h-16 px-4 flex items-center justify-between border-b border-white/10">
               <Link href="/" aria-label="Ir al inicio" className="inline-flex items-center" onClick={() => setOpen(false)}>
-                <img src="/logo.png" alt="LEM-BOX" className="h-7 w-auto" />
+                <img src="/logo.png" alt="LEM-BOX" className="h-10 w-auto" />
               </Link>
               <button
                 type="button"
