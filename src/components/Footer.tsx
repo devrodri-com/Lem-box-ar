@@ -82,7 +82,13 @@ export default function Footer() {
   
         <div className="border-t border-white/10">
           <div className="max-w-7xl mx-auto px-6 py-4 text-xs text-white/60 text-center">
-            © {new Date().getFullYear()} LEM-BOX. Todos los derechos reservados. · Made with 💻 by <a href="https://devrodri.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200">Rodrigo Opalo</a>
+            <div className="block sm:hidden leading-relaxed">
+              © {new Date().getFullYear()} LEM-BOX. Todos los derechos reservados.<br />
+              Made with 💻 by <a href="https://devrodri.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200">Rodrigo Opalo</a>
+            </div>
+            <div className="hidden sm:block">
+              © {new Date().getFullYear()} LEM-BOX. Todos los derechos reservados. · Made with 💻 by <a href="https://devrodri.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200">Rodrigo Opalo</a>
+            </div>
           </div>
         </div>
       </footer>
