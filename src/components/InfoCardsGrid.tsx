@@ -55,10 +55,6 @@ export default function InfoCardsGrid({
                   priority={i === 0}
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-black/40" />
-                <div className="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs text-white/90">
-                  <IconCmp className="size-4" aria-hidden="true" />
-                  <span className="sr-only">{it.title}</span>
-                </div>
               </div>
               <div className="p-5">
                 <h3 className="text-base md:text-lg font-semibold text-white">
