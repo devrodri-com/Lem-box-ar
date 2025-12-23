@@ -162,7 +162,7 @@ export default function NavbarDesktop() {
             <FaWhatsapp className="w-5 h-5" />
           </a>
           <a
-            href="https://lem-box-sistema-v2.vercel.app/acceder"
+            href="https://portal.lem-box.com/acceder"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center h-11 px-5 rounded-full border border-white/30 text-sm font-semibold text-white/90 no-underline hover:border-[#eb6618] hover:text-[#eb6618] whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618]/40 transition"
@@ -170,7 +170,7 @@ export default function NavbarDesktop() {
             Iniciar sesión
           </a>
           <a
-            href="https://lem-box-sistema-v2.vercel.app/registro"
+            href="https://portal.lem-box.com/registro"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center h-11 px-5 rounded-full bg-[#eb6618] text-white visited:!text-white hover:!text-white active:!text-white text-sm font-semibold no-underline hover:bg-[#d15612] focus-visible:!text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618]/40 shadow-sm transition"
