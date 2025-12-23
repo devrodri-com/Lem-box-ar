@@ -197,7 +197,7 @@ export default function ServiciosPage() {
           </p>
           <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
             <a
-              href="https://lem-box.com/Tracking/web/#/register"
+              href="https://portal.lem-box.com/registro"
               data-umami-event="cta-servicios-register"
               className="inline-flex items-center justify-center rounded-xl bg-emerald-500/90 px-5 py-3 text-sm font-semibold text-[#02120f] hover:bg-emerald-400 transition-colors"
             >

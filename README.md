@@ -21,7 +21,7 @@ Project for the new **LEM-BOX** website developed with **Next.js (App Router)**,
 
 - **Hero**  
   - 100dvh, dynamic background, bottom overlay/fade  
-  - Main CTA to registration (`https://lem-box.com/Tracking/web/#/register`)  
+  - Main CTA to registration (`https://portal.lem-box.com/registro`)  
   - Micro-animation on scroll indicator  
 
 - **“About Us” section**  

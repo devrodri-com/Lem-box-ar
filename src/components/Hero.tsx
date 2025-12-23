@@ -35,7 +35,7 @@ export default function Hero() {
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
-            href="https://lem-box.com/Tracking/web/#/register"
+            href="https://portal.lem-box.com/registro"
             className="w-full sm:w-auto inline-flex h-11 px-6 items-center justify-center rounded-full bg-[#eb6618] text-white font-semibold hover:bg-[#d15612] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618]/40 shadow-[0_8px_20px_-6px_rgba(235,102,24,0.45)]"
           >
             Crear cuenta

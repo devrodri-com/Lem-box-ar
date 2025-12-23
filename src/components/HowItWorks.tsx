@@ -66,7 +66,7 @@ export default function HowItWorks() {
 
         <div className="mt-12 flex">
           <a
-            href="https://lem-box.com/Tracking/web/#/register"
+            href="https://portal.lem-box.com/registro"
             className="mx-auto inline-flex items-center justify-center rounded-xl bg-emerald-500/90 px-5 py-3 text-sm font-semibold text-[#02120f] hover:bg-emerald-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#02120f]"
             aria-label="Crear cuenta en LEM-BOX"
             data-umami-event="cta-howitworks"
