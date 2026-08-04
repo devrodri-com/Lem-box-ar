@@ -1,12 +1,14 @@
 // src/app/terminos/page.tsx
 import type { Metadata } from "next";
+import { regionalAlternates, regionalOpenGraph } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Términos y Condiciones | LEM-BOX",
   description:
     "Condiciones de uso de LEM-BOX. Reglas de registro, uso del servicio, limitaciones de responsabilidad y enlaces a terceros.",
   robots: { index: true },
-  alternates: { canonical: "/terminos" },
+  alternates: regionalAlternates("/terminos"),
+  openGraph: regionalOpenGraph("/terminos"),
 };
 
 export default function TerminosPage() {

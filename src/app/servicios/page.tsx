@@ -1,10 +1,13 @@
 // src/app/servicios/page.tsx
 import type { Metadata } from "next";
+import { regionalAlternates, regionalOpenGraph } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Servicios | LEM-BOX",
   description:
     "Servicios logísticos integrales en EE.UU. y envíos internacionales. Infraestructura en Miami, servicios personalizados, fulfillment 3PL y despachos a Argentina y dentro de EE.UU.",
+  alternates: regionalAlternates("/servicios"),
+  openGraph: regionalOpenGraph("/servicios"),
 };
 
 export default function ServiciosPage() {

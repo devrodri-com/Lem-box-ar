@@ -1,6 +1,7 @@
 
 
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -10,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: ["https://lem-box.com.uy/sitemap.xml"],
+    sitemap: [`${SITE_URL}/sitemap.xml`],
   };
 }

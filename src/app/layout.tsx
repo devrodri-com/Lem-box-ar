@@ -6,6 +6,7 @@ import "./globals.css";
 import NavbarDesktop from "@/components/hooks/NavbarDesktop";
 import NavbarMobile from "@/components/hooks/NavbarMobile";
 import Footer from "@/components/Footer";
+import { SITE_URL, regionalAlternates, regionalOpenGraph } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,21 +19,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lem-box.com.uy"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "LEM-BOX — Logística Miami ↔ Argentina",
     template: "%s | LEM-BOX Argentina",
   },
   description:
     "Comprás en EE.UU. y recibís en Argentina. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
-  alternates: {
-    canonical: "https://lem-box.com.uy",
-    languages: {
-      "es-UY": "https://lem-box.com.uy",
-      "es-AR": "https://lem-box.com.ar",
-      "x-default": "https://portal.lem-box.com/acceder",
-    },
-  },
+  alternates: regionalAlternates("/"),
   themeColor: "#02120F",
   manifest: "/manifest.webmanifest",
   icons: {
@@ -47,20 +41,17 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    type: "website",
-    url: "/",
-    siteName: "LEM-BOX Argentina",
+    ...regionalOpenGraph("/"),
     title: "LEM-BOX Argentina — Envíos rápidos desde Miami",
     description:
       "Comprás en EE.UU. y recibís en Argentina. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
-    images: [{ url: "/og-lem-box-uy.jpg?v=3", width: 1200, height: 630, alt: "LEM-BOX Argentina" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "LEM-BOX Argentina — Envíos rápidos desde Miami",
     description:
       "Comprás en EE.UU. y recibís en Argentina. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
-    images: ["/og-lem-box-uy.jpg?v=3"],
+    images: ["/og-lem-box-ar.jpg"],
   },
 };
 

@@ -21,7 +21,7 @@ export default async function AboutSection() {
         {/* Columna de texto */}
         <div className="col-span-12 lg:col-span-6">
           <span className="inline-block text-sm text-white/70 tracking-normal">
-            10 años en logística import-export EE.UU. ↔ {country === "ar" ? "Uruguay" : "Argentina"}
+            10 años en logística import-export EE.UU. ↔ Argentina
           </span>
           <h2
             id="quienes-somos-title"
