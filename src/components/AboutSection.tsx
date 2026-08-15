@@ -1,14 +1,9 @@
 // src/components/AboutSection.tsx
 import Image from "next/image";
 import { getContent } from "@/lib/content";
-import { getCountryFromHost } from "@/lib/country";
-import { headers } from "next/headers";
 
-export default async function AboutSection() {
-  const headersList = await headers();
-  const host = headersList.get("host") || "";
-  const country = getCountryFromHost(host);
-  const content = getContent(country);
+export default function AboutSection() {
+  const content = getContent();
 
   return (
     <section
