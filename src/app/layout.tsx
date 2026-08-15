@@ -1,11 +1,15 @@
 // src/app/layout.tsx
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import NavbarDesktop from "@/components/hooks/NavbarDesktop";
 import NavbarMobile from "@/components/hooks/NavbarMobile";
 import Footer from "@/components/Footer";
-import { SITE_URL, regionalAlternates, regionalOpenGraph } from "@/lib/seo";
+import { SITE_URL, reciprocalAlternates, regionalOpenGraph } from "@/lib/seo";
+
+export const viewport: Viewport = {
+  themeColor: "#02120F",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -15,8 +19,7 @@ export const metadata: Metadata = {
   },
   description:
     "Comprás en EE.UU. y recibís en Argentina. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
-  alternates: regionalAlternates("/"),
-  themeColor: "#02120F",
+  alternates: reciprocalAlternates("/"),
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [

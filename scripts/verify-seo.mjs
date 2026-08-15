@@ -3,313 +3,444 @@
 //
 // Verifica los contratos regionales de LEM-BOX Argentina.
 //
-//   node scripts/verify-seo.mjs                     -> contrato estático (fuentes)
-//   node scripts/verify-seo.mjs --url <base>        -> además, HTML realmente servido
-//   node scripts/verify-seo.mjs --url <base> --peer <uy>  -> además, reciprocidad real
+//   node scripts/verify-seo.mjs
+//   node scripts/verify-seo.mjs --url <base>
+//   node scripts/verify-seo.mjs --url <base> --peer <uy>
 //
-// En preview el canonical y los alternates siguen apuntando al host de
-// producción (metadataBase es fijo): eso es lo correcto, así que se contrastan
-// contra SITE_URL, no contra la base que se está fetcheando.
-//
-// Sin dependencias externas.
+// Sin dependencias externas. El lector del registro conoce únicamente el
+// formato acotado de SEO_ROUTES; no intenta interpretar TypeScript general.
 
-import { readFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { join, relative } from "node:path";
 
 const ROOT = process.cwd();
 const SITE_URL = "https://www.lem-box.com.ar";
 const UY_SITE_URL = "https://lem-box.com.uy";
 const X_DEFAULT_URL = "https://lem-box.com/acceder";
 const OG_IMAGE_PATH = "/og-lem-box-ar.jpg";
-const ROUTES = ["/", "/servicios", "/privacidad", "/terminos"];
-
-// Next normaliza la raíz sin barra final al resolverla contra metadataBase.
-// "https://host" y "https://host/" son el mismo recurso (RFC 3986), y ambos
-// repos normalizan igual, así que la reciprocidad sigue casando literalmente.
-const abs = (base, route) => (route === "/" ? base : `${base}${route}`);
+const THEME_COLOR = "#02120F";
+const EXPECTED_CURRENT_ROUTES = ["/", "/servicios", "/privacidad", "/terminos"];
 
 const failures = [];
 const fail = (rule, detail) => failures.push(`${rule}: ${detail}`);
-const read = (p) => readFileSync(join(ROOT, p), "utf8");
+const read = (path) => readFileSync(join(ROOT, path), "utf8");
+const seoSource = read("src/lib/seo.ts");
 
-/* ---------------------------------------------------------------- estático */
+const stringProperty = (source, property) =>
+  source.match(new RegExp(`${property}:\\s*"([^"]*)"`))?.[1];
+const booleanProperty = (source, property) => {
+  const value = source.match(new RegExp(`${property}:\\s*(true|false)`))?.[1];
+  return value === undefined ? undefined : value === "true";
+};
+const numberProperty = (source, property) => {
+  const value = source.match(new RegExp(`${property}:\\s*([0-9.]+)`))?.[1];
+  return value === undefined ? undefined : Number(value);
+};
 
-function checkContractModule() {
-  const src = read("src/lib/seo.ts");
-  if (!src.includes(`export const SITE_URL = "${SITE_URL}"`)) {
-    fail("canonical-host", `src/lib/seo.ts debe fijar SITE_URL en ${SITE_URL}`);
+function parseRouteRegistry(source) {
+  const block = source.match(
+    /export const SEO_ROUTES = \[([\s\S]*?)\]\s+as const satisfies readonly SeoRouteDefinition\[\];/,
+  )?.[1];
+  if (!block) {
+    fail("route-registry", "no se encontró SEO_ROUTES con el contrato tipado esperado");
+    return [];
   }
-  if (!/SITE_URL = "https:\/\/www\./.test(src)) {
-    fail("canonical-www", "el host canónico AR tiene que incluir www");
+
+  const objects = [...block.matchAll(/\{([^{}]+)\}/g)].map((match) => match[1]);
+  if (!objects.length) fail("route-registry", "SEO_ROUTES está vacío o no se pudo leer");
+  return objects.map((object) => ({
+    path: stringProperty(object, "path"),
+    marketScope: stringProperty(object, "marketScope"),
+    indexable: booleanProperty(object, "indexable"),
+    sitemap: booleanProperty(object, "sitemap"),
+    changeFrequency: stringProperty(object, "changeFrequency"),
+    priority: numberProperty(object, "priority"),
+    uruguayEquivalentPath: stringProperty(object, "uruguayEquivalentPath"),
+    sitemapExclusionReason: stringProperty(object, "sitemapExclusionReason"),
+  }));
+}
+
+const ROUTES = parseRouteRegistry(seoSource);
+const INDEXABLE_ROUTES = ROUTES.filter((route) => route.indexable);
+const SITEMAP_ROUTES = ROUTES.filter((route) => route.sitemap);
+const RECIPROCAL_ROUTES = ROUTES.filter((route) => route.marketScope === "RECIPROCAL");
+
+const cleanPath = (path) =>
+  typeof path === "string" &&
+  path.startsWith("/") &&
+  !path.includes("?") &&
+  !path.includes("#") &&
+  (path === "/" || !path.endsWith("/"));
+const canonicalUrl = (base, path) => (path === "/" ? base : `${base}${path}`);
+const sitemapUrl = (path) => `${SITE_URL}${path}`;
+
+function checkRouteRegistry() {
+  const seen = new Set();
+  for (const route of ROUTES) {
+    if (!cleanPath(route.path)) fail("route-path", `path inválido: ${route.path}`);
+    if (seen.has(route.path)) fail("route-duplicate", `path duplicado: ${route.path}`);
+    seen.add(route.path);
+
+    if (!["RECIPROCAL", "ARGENTINA_ONLY"].includes(route.marketScope)) {
+      fail("route-market-scope", `${route.path}: marketScope inválido ${route.marketScope}`);
+    }
+    if (route.marketScope === "RECIPROCAL" && !cleanPath(route.uruguayEquivalentPath)) {
+      fail("reciprocal-equivalent", `${route.path}: falta equivalente Uruguay válido`);
+    }
+    if (route.marketScope === "ARGENTINA_ONLY" && route.uruguayEquivalentPath !== undefined) {
+      fail("ar-only-uy", `${route.path}: una ruta Argentina-only no admite equivalente Uruguay`);
+    }
+    if (route.indexable === undefined || route.sitemap === undefined) {
+      fail("route-index-policy", `${route.path}: indexable y sitemap deben ser explícitos`);
+    }
+    if (!route.indexable && route.sitemap) {
+      fail("route-index-policy", `${route.path}: una ruta no indexable no puede entrar al sitemap`);
+    }
+    if (route.indexable && !route.sitemap && !route.sitemapExclusionReason) {
+      fail("sitemap-drift", `${route.path}: exclusión del sitemap sin decisión explícita`);
+    }
+    if (route.sitemap) {
+      if (!route.changeFrequency) fail("sitemap-contract", `${route.path}: falta changeFrequency`);
+      if (route.priority === undefined || route.priority < 0 || route.priority > 1) {
+        fail("sitemap-contract", `${route.path}: priority inválida ${route.priority}`);
+      }
+    }
   }
-  if (!src.includes(`export const X_DEFAULT_URL = "${X_DEFAULT_URL}"`)) {
-    fail("x-default", `x-default debe ser ${X_DEFAULT_URL}`);
+
+  const actual = ROUTES.map((route) => route.path).sort();
+  const expected = [...EXPECTED_CURRENT_ROUTES].sort();
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    fail("phase-public-routes", `rutas ${actual.join(", ")}; esperadas ${expected.join(", ")}`);
+  }
+  for (const route of ROUTES) {
+    if (EXPECTED_CURRENT_ROUTES.includes(route.path) && route.marketScope !== "RECIPROCAL") {
+      fail("phase-route-classification", `${route.path} debe ser RECIPROCAL en AR-03B1`);
+    }
   }
 }
 
-// Único lugar donde una URL .com.uy es legítima: el alternate hreflang es-UY.
-function checkNoUruguayHosts() {
-  const files = [
-    "src/app/layout.tsx",
-    "src/app/robots.ts",
-    "src/app/sitemap.ts",
-    "src/app/servicios/page.tsx",
-    "src/app/privacidad/page.tsx",
-    "src/app/terminos/page.tsx",
-  ];
-  for (const f of files) {
-    if (read(f).includes("com.uy")) {
-      fail("uy-host-leak", `${f} referencia com.uy fuera del alternate es-UY`);
+function functionBody(source, name) {
+  const start = source.indexOf(`export function ${name}`);
+  const open = source.indexOf("{", start);
+  if (start === -1 || open === -1) return null;
+  let depth = 0;
+  for (let index = open; index < source.length; index += 1) {
+    if (source[index] === "{") depth += 1;
+    if (source[index] === "}") depth -= 1;
+    if (depth === 0) return source.slice(open + 1, index);
+  }
+  return null;
+}
+
+function checkMetadataHelpers() {
+  const reciprocal = functionBody(seoSource, "reciprocalAlternates");
+  const argentinaOnly = functionBody(seoSource, "argentinaOnlyAlternates");
+  if (!reciprocal) fail("reciprocal-helper", "falta reciprocalAlternates");
+  else {
+    for (const token of ['"es-AR"', '"es-UY"', '"x-default"', "UY_SITE_URL"]) {
+      if (!reciprocal.includes(token)) fail("reciprocal-helper", `falta ${token}`);
     }
   }
-  const seo = read("src/lib/seo.ts");
-  const uyHits = [...seo.matchAll(/com\.uy/g)].length;
-  if (uyHits !== 1 || !seo.includes(`export const UY_SITE_URL = "${UY_SITE_URL}"`)) {
-    fail("uy-host-leak", "src/lib/seo.ts solo puede nombrar com.uy en UY_SITE_URL");
+  if (!argentinaOnly) fail("ar-only-helper", "falta argentinaOnlyAlternates");
+  else if (/es-UY|UY_SITE_URL|uruguayEquivalentPath|x-default/.test(argentinaOnly)) {
+    fail("ar-only-uy", "argentinaOnlyAlternates inventa una relación con Uruguay");
+  }
+
+  for (const route of INDEXABLE_ROUTES) {
+    const file = route.path === "/" ? "src/app/layout.tsx" : `src/app${route.path}/page.tsx`;
+    if (!existsSync(join(ROOT, file))) {
+      fail("route-file", `${route.path}: falta ${file}`);
+      continue;
+    }
+    const source = read(file);
+    const helper = route.marketScope === "RECIPROCAL"
+      ? "reciprocalAlternates"
+      : "argentinaOnlyAlternates";
+    if (!source.includes(`${helper}("${route.path}")`)) {
+      fail("route-alternates", `${file} debe declarar ${helper}("${route.path}")`);
+    }
+    if (!source.includes(`regionalOpenGraph("${route.path}")`)) {
+      fail("route-og-url", `${file} debe declarar regionalOpenGraph("${route.path}")`);
+    }
+  }
+}
+
+const stripComments = (source) =>
+  source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+
+function checkContractModule() {
+  if (!seoSource.includes(`export const SITE_URL = "${SITE_URL}"`)) {
+    fail("canonical-host", `SITE_URL debe ser ${SITE_URL}`);
+  }
+  if (!seoSource.includes(`export const UY_SITE_URL = "${UY_SITE_URL}"`)) {
+    fail("uy-host", `UY_SITE_URL debe ser ${UY_SITE_URL}`);
+  }
+  if (!seoSource.includes(`export const X_DEFAULT_URL = "${X_DEFAULT_URL}"`)) {
+    fail("x-default", `X_DEFAULT_URL debe ser ${X_DEFAULT_URL}`);
   }
 }
 
 function checkRobotsAndSitemap() {
   const robots = read("src/app/robots.ts");
   if (!robots.includes("${SITE_URL}/sitemap.xml")) {
-    fail("robots-sitemap", "robots.ts debe declarar el sitemap bajo el host AR");
+    fail("robots-sitemap", "robots.ts debe declarar el sitemap bajo SITE_URL");
   }
   const sitemap = read("src/app/sitemap.ts");
-  if (!sitemap.includes("RECIPROCAL_ROUTES") || !sitemap.includes("SITE_URL")) {
-    fail("sitemap-host", "sitemap.ts debe derivarse de SITE_URL y las rutas indexables");
+  if (!sitemap.includes("SEO_ROUTES") || !sitemap.includes("route.sitemap")) {
+    fail("sitemap-registry", "sitemap.ts debe derivarse y filtrarse desde SEO_ROUTES");
+  }
+  if (/RECIPROCAL_ROUTES|const\s+(?:ROUTES|PRIORITY)\b/.test(sitemap)) {
+    fail("sitemap-registry", "sitemap.ts conserva una lista manual paralela");
   }
   if (stripComments(sitemap).includes("#")) {
-    fail("sitemap-fragments", "el sitemap no debe publicar anclas: duplican la home");
+    fail("sitemap-fragments", "sitemap.ts no debe publicar anclas");
   }
 }
 
-const stripComments = (src) =>
-  src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+function walkSource(directory) {
+  return readdirSync(join(ROOT, directory), { withFileTypes: true }).flatMap((entry) => {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) return walkSource(path);
+    return /\.[cm]?[jt]sx?$/.test(entry.name) ? [path] : [];
+  });
+}
 
-function checkManifest() {
+function checkArgentinaOnlyRuntime() {
+  if (existsSync(join(ROOT, "middleware.ts"))) fail("market-middleware", "middleware.ts debe eliminarse");
+  if (existsSync(join(ROOT, "src/lib/country.ts"))) fail("market-country", "country.ts debe eliminarse");
+
+  const publicSources = walkSource("src").filter((path) => !path.startsWith("src/app/api/"));
+  for (const path of publicSources) {
+    const source = read(path);
+    if (/getCountryFromHost|lem-country|siteContentByCountry/.test(source)) {
+      fail("market-runtime", `${path} conserva resolución regional legacy`);
+    }
+    if (/host\.endsWith\(\s*["']\.com\.ar["']\s*\)[\s\S]{0,100}["']uy["']/.test(source)) {
+      fail("uy-fallback", `${path} conserva fallback uy`);
+    }
+  }
+
+  for (const path of ["src/app/page.tsx", "src/components/AboutSection.tsx"]) {
+    const source = read(path);
+    if (/from\s+["']next\/headers["']|\bheaders\s*\(|\bcookies\s*\(/.test(source)) {
+      fail("dynamic-home", `${path} consume APIs dinámicas de request`);
+    }
+  }
+
+  const content = read("src/lib/content.ts");
+  if (/\buy\s*:\s*\{/.test(content) || !content.includes("export const siteContent =")) {
+    fail("uy-content", "content.ts debe contener una única fuente Argentina-only");
+  }
+}
+
+function pageRoutes() {
+  return walkSource("src/app")
+    .filter((path) => path.endsWith("/page.tsx") || path === "src/app/page.tsx")
+    .map((path) => {
+      const relativePath = relative(join(ROOT, "src/app"), join(ROOT, path));
+      return relativePath === "page.tsx" ? "/" : `/${relativePath.replace(/\/page\.tsx$/, "")}`;
+    });
+}
+
+function checkPublicRoutes() {
+  const actual = pageRoutes().sort();
+  const expected = [...EXPECTED_CURRENT_ROUTES].sort();
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    fail("phase-public-files", `páginas públicas ${actual.join(", ")}; esperadas ${expected.join(", ")}`);
+  }
+}
+
+function checkViewport() {
+  const layout = read("src/app/layout.tsx");
+  if (!layout.includes("export const viewport: Viewport") || !layout.includes(`themeColor: "${THEME_COLOR}"`)) {
+    fail("theme-color", `themeColor debe migrarse a viewport y conservar ${THEME_COLOR}`);
+  }
+  if ((layout.match(/themeColor:/g) ?? []).length !== 1) {
+    fail("theme-color", "themeColor debe existir una sola vez, fuera de metadata");
+  }
+}
+
+function checkManifestAndVisibleCopy() {
   const manifest = JSON.parse(read("src/app/manifest.webmanifest"));
-  const blob = JSON.stringify(manifest);
-  if (/LEM-BOX UY/.test(blob) || /Uruguay/.test(blob)) {
-    fail("manifest-market", "el manifest AR no puede identificar el mercado uruguayo");
-  }
-  if (manifest.short_name !== "LEM-BOX AR") {
-    fail("manifest-market", `short_name inesperado: ${manifest.short_name}`);
-  }
-  if (manifest.lang !== "es-AR") {
-    fail("manifest-market", `lang inesperado: ${manifest.lang}`);
+  if (manifest.short_name !== "LEM-BOX AR" || manifest.lang !== "es-AR") {
+    fail("manifest-market", "el manifest debe conservar identidad Argentina");
   }
   for (const key of ["id", "name", "description", "start_url"]) {
     if (!manifest[key]) fail("manifest-market", `falta ${key} en el manifest`);
   }
-}
-
-function checkVisibleCopy() {
   const about = read("src/components/AboutSection.tsx");
-  if (about.includes("EE.UU. ↔ Uruguay") || /↔ \{.*Uruguay/.test(about)) {
-    fail("market-copy", "AboutSection no puede publicar «EE.UU. ↔ Uruguay» en AR");
-  }
-  if (!about.includes("EE.UU. ↔ Argentina")) {
-    fail("market-copy", "AboutSection debe publicar «EE.UU. ↔ Argentina»");
+  if (!about.includes("EE.UU. ↔ Argentina") || about.includes("EE.UU. ↔ Uruguay")) {
+    fail("market-copy", "AboutSection debe publicar únicamente Argentina");
   }
 }
 
-// Next reemplaza `alternates` entero: cada ruta tiene que declarar el suyo o
-// hereda el de la portada y todas las subrutas colapsan en canonical "/".
-function checkPerRouteAlternates() {
-  for (const route of ROUTES) {
-    const file = route === "/" ? "src/app/layout.tsx" : `src/app${route}/page.tsx`;
-    const src = read(file);
-    if (!src.includes(`regionalAlternates("${route}")`)) {
-      fail("route-alternates", `${file} debe declarar regionalAlternates("${route}")`);
+function jpegSize(buffer) {
+  let index = 2;
+  while (index < buffer.length) {
+    if (buffer[index] !== 0xff) return null;
+    const marker = buffer[index + 1];
+    const length = buffer.readUInt16BE(index + 2);
+    const isSof = marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker);
+    if (isSof) {
+      return { height: buffer.readUInt16BE(index + 5), width: buffer.readUInt16BE(index + 7) };
     }
-    if (!src.includes(`regionalOpenGraph("${route}")`)) {
-      fail("route-og-url", `${file} debe declarar regionalOpenGraph("${route}") o hereda el og:url de la portada`);
-    }
+    index += 2 + length;
   }
+  return null;
 }
 
 function checkOgAsset() {
   const path = join(ROOT, "public", OG_IMAGE_PATH.slice(1));
   if (!existsSync(path)) return fail("og-asset", `falta public${OG_IMAGE_PATH}`);
-  const dims = jpegSize(readFileSync(path));
-  if (!dims || dims.width !== 1200 || dims.height !== 630) {
-    fail("og-asset", `el asset social debe ser JPEG 1200x630, es ${dims?.width}x${dims?.height}`);
-  }
-  const layout = read("src/app/layout.tsx");
-  if (!layout.includes(`"${OG_IMAGE_PATH}"`) || layout.includes("og-lem-box-uy")) {
-    fail("og-image", `Open Graph y Twitter deben servir ${OG_IMAGE_PATH}`);
+  const dimensions = jpegSize(readFileSync(path));
+  if (dimensions?.width !== 1200 || dimensions?.height !== 630) {
+    fail("og-asset", `el asset debe medir 1200x630, mide ${dimensions?.width}x${dimensions?.height}`);
   }
 }
 
-/** Lee ancho/alto del marcador SOF de un JPEG, sin dependencias. */
-function jpegSize(buf) {
-  let i = 2;
-  while (i < buf.length) {
-    if (buf[i] !== 0xff) return null;
-    const marker = buf[i + 1];
-    const len = buf.readUInt16BE(i + 2);
-    const isSOF = marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker);
-    if (isSOF) return { height: buf.readUInt16BE(i + 5), width: buf.readUInt16BE(i + 7) };
-    i += 2 + len;
-  }
-  return null;
-}
-
-/* -------------------------------------------------------------------- live */
-
-const attr = (tag, name) =>
-  tag.match(new RegExp(`${name}="([^"]*)"`, "i"))?.[1] ?? null;
-
+const attr = (tag, name) => tag.match(new RegExp(`${name}="([^"]*)"`, "i"))?.[1] ?? null;
 const linksOf = (html, rel) =>
   [...html.matchAll(/<link\b[^>]*>/gi)]
-    .map((m) => m[0])
-    .filter((t) => attr(t, "rel")?.toLowerCase() === rel);
-
-const metaOf = (html, prop) =>
+    .map((match) => match[0])
+    .filter((tag) => attr(tag, "rel")?.toLowerCase() === rel);
+const metaOf = (html, property) =>
   [...html.matchAll(/<meta\b[^>]*>/gi)]
-    .map((m) => m[0])
-    .find((t) => (attr(t, "property") ?? attr(t, "name"))?.toLowerCase() === prop)
+    .map((match) => match[0])
+    .find((tag) => (attr(tag, "property") ?? attr(tag, "name"))?.toLowerCase() === property)
     ?.match(/content="([^"]*)"/i)?.[1] ?? null;
 
 async function get(url) {
-  const res = await fetch(url, { redirect: "follow" });
-  return { res, body: await res.text(), finalUrl: res.url };
+  const response = await fetch(url, { redirect: "follow" });
+  return { response, body: await response.text() };
 }
 
 async function checkLive(base) {
-  for (const route of ROUTES) {
-    const url = `${base}${route === "/" ? "/" : route}`;
-    const { res, body } = await get(url);
-    if (!res.ok) {
-      fail("live-route", `${url} devolvió ${res.status}`);
+  for (const route of INDEXABLE_ROUTES) {
+    const url = `${base}${route.path === "/" ? "/" : route.path}`;
+    const { response, body } = await get(url);
+    if (!response.ok) {
+      fail("live-route", `${url} devolvió ${response.status}`);
       continue;
     }
 
-    const canonical = linksOf(body, "canonical").map((t) => attr(t, "href"))[0];
-    if (canonical !== abs(SITE_URL, route)) {
-      fail("live-canonical", `${route}: canonical ${canonical}, esperado ${abs(SITE_URL, route)}`);
+    const canonical = linksOf(body, "canonical").map((tag) => attr(tag, "href"))[0];
+    if (canonical !== canonicalUrl(SITE_URL, route.path)) {
+      fail("live-canonical", `${route.path}: ${canonical}`);
     }
-    if (canonical?.includes("com.uy")) {
-      fail("live-canonical", `${route}: canonical apunta a Uruguay`);
+    const alternates = Object.fromEntries(
+      linksOf(body, "alternate").map((tag) => [attr(tag, "hreflang"), attr(tag, "href")]),
+    );
+    if (route.marketScope === "RECIPROCAL") {
+      const expected = {
+        "es-AR": canonicalUrl(SITE_URL, route.path),
+        "es-UY": canonicalUrl(UY_SITE_URL, route.uruguayEquivalentPath),
+        "x-default": X_DEFAULT_URL,
+      };
+      for (const [language, href] of Object.entries(expected)) {
+        if (alternates[language] !== href) {
+          fail("live-hreflang", `${route.path}: ${language} = ${alternates[language]}, esperado ${href}`);
+        }
+      }
+    } else if (alternates["es-UY"] || Object.values(alternates).some((href) => href?.includes("com.uy"))) {
+      fail("live-ar-only-uy", `${route.path}: publica alternate Uruguay`);
     }
 
-    const alts = Object.fromEntries(
-      linksOf(body, "alternate").map((t) => [attr(t, "hreflang"), attr(t, "href")])
-    );
-    const expected = {
-      "es-AR": abs(SITE_URL, route),
-      "es-UY": abs(UY_SITE_URL, route),
-      "x-default": X_DEFAULT_URL,
-    };
-    for (const [lang, href] of Object.entries(expected)) {
-      const got = alts[lang];
-      if (!got) fail("live-hreflang", `${route}: falta hreflang ${lang}`);
-      else if (got !== href) {
-        fail("live-hreflang", `${route}: hreflang ${lang} = ${got}, esperado ${href}`);
+    if (metaOf(body, "og:url") !== canonicalUrl(SITE_URL, route.path)) {
+      fail("live-og-url", `${route.path}: ${metaOf(body, "og:url")}`);
+    }
+    if (metaOf(body, "og:locale") !== "es_AR") {
+      fail("live-og-locale", `${route.path}: ${metaOf(body, "og:locale")}`);
+    }
+    for (const property of ["og:image", "twitter:image"]) {
+      const image = metaOf(body, property);
+      if (!image?.endsWith(OG_IMAGE_PATH) || image.includes("com.uy")) {
+        fail("live-og-image", `${route.path}: ${property} = ${image}`);
       }
     }
-
-    const ogUrl = metaOf(body, "og:url");
-    if (ogUrl !== abs(SITE_URL, route)) {
-      fail("live-og-url", `${route}: og:url ${ogUrl}, esperado ${abs(SITE_URL, route)}`);
+    if (metaOf(body, "theme-color") !== THEME_COLOR) {
+      fail("live-theme-color", `${route.path}: ${metaOf(body, "theme-color")}`);
     }
 
-    for (const prop of ["og:image", "twitter:image"]) {
-      const img = metaOf(body, prop);
-      if (!img?.endsWith(OG_IMAGE_PATH)) fail("live-og-image", `${route}: ${prop} = ${img}`);
-      if (img?.includes("com.uy")) fail("live-og-image", `${route}: ${prop} apunta a Uruguay`);
-    }
-
-    if (metaOf(body, "og:locale") !== "es_AR") {
-      fail("live-og-locale", `${route}: og:locale = ${metaOf(body, "og:locale")}`);
-    }
-
-    // Cualquier rastro de Uruguay salvo el alternate es-UY deliberado. El
-    // <head> es lo que consumen los buscadores; el payload RSC del <body>
-    // reitera los mismos tags y produciría falsos positivos.
-    const head = body.split("</head>")[0].replace(/<link\b[^>]*hreflang="es-UY"[^>]*>/gi, "");
-    if (/lem-box\.com\.uy/.test(head)) {
-      fail("live-uy-leak", `${route}: el <head> nombra lem-box.com.uy fuera del hreflang es-UY`);
-    }
-    // Copy visible: fuera de <script>, donde vive el payload serializado.
     const visible = body.replace(/<script[\s\S]*?<\/script>/gi, "");
     if (/EE\.UU\. ↔ Uruguay/.test(visible)) {
-      fail("live-market-copy", `${route}: publica «EE.UU. ↔ Uruguay»`);
+      fail("live-market-copy", `${route.path}: publica Uruguay`);
     }
   }
 
   const robots = await get(`${base}/robots.txt`);
   if (!robots.body.includes(`${SITE_URL}/sitemap.xml`) || robots.body.includes("com.uy")) {
-    fail("live-robots", `robots.txt declara: ${robots.body.match(/Sitemap:.*/)?.[0]}`);
+    fail("live-robots", "robots.txt no conserva el host Argentina");
   }
 
   const sitemap = await get(`${base}/sitemap.xml`);
-  const locs = [...sitemap.body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  if (locs.some((l) => l.includes("com.uy"))) fail("live-sitemap", "el sitemap contiene URLs UY");
-  if (locs.some((l) => !l.startsWith(SITE_URL))) fail("live-sitemap", "el sitemap publica URLs fuera del host AR");
-  if (locs.some((l) => l.includes("#"))) fail("live-sitemap", "el sitemap contiene anclas");
-  if (locs.some((l) => /localhost|vercel\.app/.test(l))) fail("live-sitemap", "el sitemap filtra hosts de preview");
-  if (new Set(locs).size !== locs.length) fail("live-sitemap", "el sitemap tiene duplicados");
-  if (locs.length !== ROUTES.length) fail("live-sitemap", `el sitemap lista ${locs.length} URLs, esperadas ${ROUTES.length}`);
+  const locations = [...sitemap.body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
+  const expectedLocations = SITEMAP_ROUTES.map((route) => sitemapUrl(route.path));
+  if (JSON.stringify(locations) !== JSON.stringify(expectedLocations)) {
+    fail("live-sitemap", `URLs ${locations.join(", ")}; esperadas ${expectedLocations.join(", ")}`);
+  }
+  if (new Set(locations).size !== locations.length) fail("live-sitemap", "contiene duplicados");
+  if (locations.some((location) => /#|\?|com\.uy|localhost|vercel\.app/.test(location))) {
+    fail("live-sitemap", "contiene una URL inválida o de otro mercado");
+  }
 
   const manifest = await get(`${base}/manifest.webmanifest`);
-  if (/LEM-BOX UY|Uruguay/.test(manifest.body)) fail("live-manifest", "el manifest identifica Uruguay");
-
+  if (/LEM-BOX UY|Uruguay/.test(manifest.body)) fail("live-manifest", "identifica Uruguay");
   const og = await fetch(`${base}${OG_IMAGE_PATH}`);
   if (!og.ok) fail("live-og-asset", `${OG_IMAGE_PATH} devolvió ${og.status}`);
   else {
-    const dims = jpegSize(Buffer.from(await og.arrayBuffer()));
-    if (dims?.width !== 1200 || dims?.height !== 630) {
-      fail("live-og-asset", `el asset servido mide ${dims?.width}x${dims?.height}`);
+    const dimensions = jpegSize(Buffer.from(await og.arrayBuffer()));
+    if (dimensions?.width !== 1200 || dimensions?.height !== 630) {
+      fail("live-og-asset", `mide ${dimensions?.width}x${dimensions?.height}`);
     }
   }
 }
 
-/** Cada alternate es-UY tiene que devolver el hreflang es-AR inverso. */
 async function checkReciprocity(peer) {
-  for (const route of ROUTES) {
-    const { res, body } = await get(`${peer}${route === "/" ? "/" : route}`);
-    if (!res.ok) {
-      fail("reciprocity", `${peer}${route} devolvió ${res.status}`);
+  for (const route of RECIPROCAL_ROUTES) {
+    const peerPath = route.uruguayEquivalentPath;
+    const { response, body } = await get(`${peer}${peerPath === "/" ? "/" : peerPath}`);
+    if (!response.ok) {
+      fail("reciprocity", `${peer}${peerPath} devolvió ${response.status}`);
       continue;
     }
     const back = linksOf(body, "alternate")
-      .map((t) => [attr(t, "hreflang"), attr(t, "href")])
-      .find(([lang]) => lang === "es-AR")?.[1];
-    if (!back) fail("reciprocity", `${peer}${route} no publica hreflang es-AR de vuelta`);
-    else if (back !== abs(SITE_URL, route)) {
-      fail("reciprocity", `${peer}${route} devuelve es-AR hacia ${back}, esperado ${abs(SITE_URL, route)}`);
-    }
+      .map((tag) => [attr(tag, "hreflang"), attr(tag, "href")])
+      .find(([language]) => language === "es-AR")?.[1];
+    const expected = canonicalUrl(SITE_URL, route.path);
+    if (back !== expected) fail("reciprocity", `${peerPath}: es-AR = ${back}, esperado ${expected}`);
   }
 }
 
-/* -------------------------------------------------------------------- main */
-
 checkContractModule();
-checkNoUruguayHosts();
+checkRouteRegistry();
+checkMetadataHelpers();
 checkRobotsAndSitemap();
-checkManifest();
-checkVisibleCopy();
-checkPerRouteAlternates();
+checkArgentinaOnlyRuntime();
+checkPublicRoutes();
+checkViewport();
+checkManifestAndVisibleCopy();
 checkOgAsset();
 
 const urlIndex = process.argv.indexOf("--url");
 if (urlIndex !== -1) {
   const base = process.argv[urlIndex + 1]?.replace(/\/$/, "");
-  if (!base) {
-    fail("usage", "--url requiere una base, p.ej. --url https://preview.vercel.app");
-  } else {
+  if (!base) fail("usage", "--url requiere una base");
+  else {
     await checkLive(base);
     const peerIndex = process.argv.indexOf("--peer");
     if (peerIndex !== -1) {
-      await checkReciprocity(process.argv[peerIndex + 1].replace(/\/$/, ""));
+      const peer = process.argv[peerIndex + 1]?.replace(/\/$/, "");
+      if (!peer) fail("usage", "--peer requiere una base");
+      else await checkReciprocity(peer);
     }
   }
 }
 
 if (failures.length) {
   console.error(`verify:seo — ${failures.length} contrato(s) incumplido(s):\n`);
-  for (const f of failures) console.error(`  ✗ ${f}`);
+  for (const failure of failures) console.error(`  ✗ ${failure}`);
   process.exit(1);
 }
-console.log("verify:seo — identidad de mercado Argentina OK");
+console.log(
+  `verify:seo — Argentina-only OK (${ROUTES.length} rutas; ${RECIPROCAL_ROUTES.length} recíprocas; ${ROUTES.length - RECIPROCAL_ROUTES.length} exclusivas AR)`,
+);
