@@ -132,6 +132,7 @@ src/
    └─ content.ts                Argentina-only copy (about, benefits, process, FAQ)
 
 next.config.ts                  HSTS response header
+scripts/verify-build-output.mjs Post-build static Home verifier
 scripts/verify-seo.mjs          SEO contract verifier (static + live)
 ```
 
@@ -214,6 +215,7 @@ RESEND_DEBUG_TO=debug@example.com
 | `npm run lint:ci` | The same explicit ESLint scope, failing on any warning |
 | `npm run typecheck` | TypeScript validation without JavaScript output |
 | `npm run verify:seo` | Verify the regional SEO contract against the sources |
+| `npm run verify:build` | Verify from Next's build artifact that Home is prerendered |
 | `npm run to-webp-all` | Batch-convert `public/` images to WebP (requires `cwebp` on PATH) |
 
 Run `npm run lint:ci` and `npm run typecheck` locally before opening a pull
@@ -247,6 +249,12 @@ asset dimensions (JPEG 1200×630, checked by parsing the JPEG SOF marker
 directly). Live mode derives its expected routes and sitemap URLs from the same
 registry; reciprocity mode checks only routes classified as `RECIPROCAL`.
 
+After `npm run build`, `npm run verify:build` reads Next's generated
+`.next/prerender-manifest.json` and fails unless `/` is present as a
+prerendered route. This post-build check protects the static Home invariant
+from direct or transitive dynamic behavior rather than relying only on source
+patterns or the build table symbol.
+
 ### Last verified
 
 These checks were most recently run on 2026-08-15; the live SEO checks targeted
@@ -257,6 +265,7 @@ the production deployment.
 | Lint | `npm run lint:ci` | Pass — 0 errors, 0 warnings |
 | Types | `npm run typecheck` | Pass — no errors |
 | Build | `npm run build` | Pass — 13 routes generated; Home static |
+| Static Home artifact | `npm run verify:build` | Pass — `/` present in Next's prerender manifest |
 | SEO contract (static + live + reciprocity) | `node scripts/verify-seo.mjs --url … --peer …` | Pass |
 
 ---
@@ -265,13 +274,15 @@ the production deployment.
 
 - **GitHub Actions** (`.github/workflows/ci.yml`) runs on every pull request and
   on pushes to `main`: Node 22, `npm ci`, lint with zero warnings, typecheck,
-  static SEO verification, then the production build. The workflow declares
+  static SEO verification, the production build, then independent verification
+  that Home is present in Next's prerender manifest. The workflow declares
   `permissions: contents: read`.
 - **Dependabot** (`.github/dependabot.yml`) opens weekly npm update PRs, capped at
   5 open at a time, with major version bumps ignored.
 - **Deployment** is handled by Vercel from `main`.
 
-CI enforces lint, typecheck, the static SEO contract, and the production build.
+CI enforces lint, typecheck, the static SEO contract, the production build, and
+the post-build static Home invariant.
 
 ---
 
@@ -310,7 +321,7 @@ Honest boundaries of what is in this repository today:
 
 - **No automated test suite.** There is no test runner, no test files, and no
   test job in CI. Correctness rests on the type checker, ESLint, the build, and
-  `verify:seo`.
+  the `verify:seo` and `verify:build` contracts.
 - **Analytics are wired but inert.** Several CTAs carry `data-umami-event`
   attributes, but no Umami (or other analytics) script is loaded anywhere, so no
   events are collected.
