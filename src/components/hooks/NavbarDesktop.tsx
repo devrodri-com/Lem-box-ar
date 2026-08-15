@@ -2,6 +2,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState, useEffect } from "react";
 import { useHeaderBehavior } from "@/components/hooks/useHeaderBehavior";
@@ -82,10 +83,13 @@ export default function NavbarDesktop() {
           aria-label="Ir al inicio"
           className="inline-flex items-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#eb6618]"
         >
-          {/* Ajusta el src a tu logo real en /public */}
-          <img
+          <Image
             src="/logo.png"
             alt="LEM-BOX"
+            width={1200}
+            height={400}
+            priority
+            unoptimized
             className={[
               "transition-all duration-200",
               isShrunk ? "h-8 md:h-9" : "h-10 md:h-12",
