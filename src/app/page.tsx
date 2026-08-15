@@ -1,7 +1,5 @@
 // src/app/page.tsx
 
-import { headers } from "next/headers";
-import { getCountryFromHost } from "@/lib/country";
 import { getContent } from "@/lib/content";
 import Hero from "@/components/Hero";
 import InfoBar from "@/components/InfoBar";
@@ -13,11 +11,8 @@ import ContactSection from "@/components/ContactSection";
 
 type Benefit = { title: string; description?: string; icon?: string };
 
-export default async function Page() {
-  const headersList = await headers();
-  const host = headersList.get("host") || "";
-  const country = getCountryFromHost(host);
-  const content = getContent(country);
+export default function Page() {
+  const content = getContent();
 
   return (
     <main>

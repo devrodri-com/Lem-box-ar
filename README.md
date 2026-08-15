@@ -59,7 +59,7 @@ application.
 
 | Route | Type | Contents |
 | --- | --- | --- |
-| `/` | Server-rendered on demand | Hero, info bar, About, Benefits grid, How it works, Contact |
+| `/` | Static | Hero, info bar, About, Benefits grid, How it works, Contact |
 | `/servicios` | Static | Miami infrastructure, custom logistics services, 3PL fulfillment, shipping |
 | `/privacidad` | Static | Privacy policy |
 | `/terminos` | Static | Terms and conditions |
@@ -86,13 +86,19 @@ main technical risk is search engines treating one as a duplicate of the other.
 `src/lib/seo.ts` centralises the contract that prevents this:
 
 - A fixed canonical host (`https://www.lem-box.com.ar`) used as `metadataBase`.
-- Per-route `hreflang` alternates for `es-AR` and `es-UY`, plus an `x-default`
-  pointing at the market-neutral platform entry point.
+- A typed route registry that distinguishes `RECIPROCAL` routes with a verified
+  Uruguay equivalent from future `ARGENTINA_ONLY` routes, which must never
+  invent an `es-UY` alternate.
+- Per-route `hreflang` alternates for the four current reciprocal routes:
+  `es-AR`, `es-UY`, and an `x-default` pointing at the market-neutral platform
+  entry point. Argentina-only routes use their own canonical without a made-up
+  Uruguay URL.
 - Per-route Open Graph declarations, because Next.js **replaces** `alternates`
   and `openGraph` wholesale rather than merging them with the layout — without a
   per-route declaration every subpage would inherit the home page's canonical.
-- A single Argentina Open Graph image, and a sitemap derived from the same route
-  list so the two can never drift apart.
+- A single Argentina Open Graph image, and a sitemap derived from the typed
+  registry so route metadata and sitemap policy cannot drift into parallel
+  manual lists.
 
 ### Accessibility and UX details
 
@@ -122,20 +128,20 @@ src/
 ├─ components/                  Presentational sections
 │  └─ hooks/                    Navbars + useHeaderBehavior
 └─ lib/
-   ├─ seo.ts                    Canonical host, hreflang, per-route metadata
-   ├─ country.ts                Host → country resolution
-   └─ content.ts                Per-country copy (about, benefits, process, FAQ)
+   ├─ seo.ts                    Typed route registry, canonical/hreflang metadata
+   └─ content.ts                Argentina-only copy (about, benefits, process, FAQ)
 
-middleware.ts                   Sets a `lem-country` cookie from the host TLD
 next.config.ts                  HSTS response header
+scripts/verify-build-output.mjs Post-build static Home verifier
 scripts/verify-seo.mjs          SEO contract verifier (static + live)
 ```
 
-**Request flow.** `middleware.ts` inspects the `Host` header and writes a
-`lem-country` cookie (`ar` for `*.com.ar`, `uy` for `*.com.uy`). Server components
-resolve the same value directly from headers via `getCountryFromHost`, then pull
-their copy from `siteContentByCountry`. This keeps the country decision in one
-place and lets the page stay a server component.
+**Request flow.** This repository is Argentina-only. Public pages do not inspect
+the request host, headers, or cookies to choose a market. The Home and its server
+sections read the single Argentina content source during prerendering, so
+localhost, Preview, and production all render the same Argentina branch. The
+four marketing/legal pages are static; `/api/contact` remains a dynamic route
+handler because submissions are processed at request time.
 
 ---
 
@@ -171,9 +177,8 @@ The site renders without any environment variables — only the contact endpoint
 needs them. Submitting the form without `RESEND_API_KEY` returns a 500 with an
 explicit "missing config" message rather than failing silently.
 
-> On `localhost` the host does not end in `.com.ar`, so `getCountryFromHost`
-> falls back to the `uy` content branch. The two branches differ only in a few
-> strings (`Argentina` vs `Buenos Aires`); the production host resolves to `ar`.
+Localhost and Preview render the same Argentina content as production; there is
+no host-based market fallback in this repository.
 
 ---
 
@@ -206,10 +211,11 @@ RESEND_DEBUG_TO=debug@example.com
 | `npm run dev` | Dev server with Turbopack |
 | `npm run build` | Production build |
 | `npm start` | Serve a built app |
-| `npm run lint` | ESLint over the tracked source, middleware, configuration, and scripts |
+| `npm run lint` | ESLint over the tracked source, configuration, and scripts |
 | `npm run lint:ci` | The same explicit ESLint scope, failing on any warning |
 | `npm run typecheck` | TypeScript validation without JavaScript output |
 | `npm run verify:seo` | Verify the regional SEO contract against the sources |
+| `npm run verify:build` | Verify from Next's build artifact that Home is prerendered |
 | `npm run to-webp-all` | Batch-convert `public/` images to WebP (requires `cwebp` on PATH) |
 
 Run `npm run lint:ci` and `npm run typecheck` locally before opening a pull
@@ -234,11 +240,20 @@ node scripts/verify-seo.mjs --url https://www.lem-box.com.ar --peer https://lem-
 ```
 
 It fails the process on any violation of: canonical host and `www` prefix,
-`x-default` target, Uruguay hostnames leaking outside the deliberate `es-UY`
-alternate, robots/sitemap host, sitemap anchors and duplicates, manifest market
-identity, visible market copy, per-route `alternates` and `openGraph`
-declarations, and Open Graph asset dimensions (JPEG 1200×630, checked by parsing
-the JPEG SOF marker directly).
+typed route uniqueness and path shape, reciprocal versus Argentina-only market
+rules, explicit index/sitemap policy, route-registry drift, invented Uruguay
+alternates, host/cookie market resolution, dynamic request APIs in the Home,
+robots/sitemap host, manifest market identity, visible market copy, per-route
+`alternates` and `openGraph` declarations, viewport theme color, and Open Graph
+asset dimensions (JPEG 1200×630, checked by parsing the JPEG SOF marker
+directly). Live mode derives its expected routes and sitemap URLs from the same
+registry; reciprocity mode checks only routes classified as `RECIPROCAL`.
+
+After `npm run build`, `npm run verify:build` reads Next's generated
+`.next/prerender-manifest.json` and fails unless `/` is present as a
+prerendered route. This post-build check protects the static Home invariant
+from direct or transitive dynamic behavior rather than relying only on source
+patterns or the build table symbol.
 
 ### Last verified
 
@@ -249,7 +264,8 @@ the production deployment.
 | --- | --- | --- |
 | Lint | `npm run lint:ci` | Pass — 0 errors, 0 warnings |
 | Types | `npm run typecheck` | Pass — no errors |
-| Build | `npm run build` | Pass — 13 routes generated |
+| Build | `npm run build` | Pass — 13 routes generated; Home static |
+| Static Home artifact | `npm run verify:build` | Pass — `/` present in Next's prerender manifest |
 | SEO contract (static + live + reciprocity) | `node scripts/verify-seo.mjs --url … --peer …` | Pass |
 
 ---
@@ -258,13 +274,15 @@ the production deployment.
 
 - **GitHub Actions** (`.github/workflows/ci.yml`) runs on every pull request and
   on pushes to `main`: Node 22, `npm ci`, lint with zero warnings, typecheck,
-  static SEO verification, then the production build. The workflow declares
+  static SEO verification, the production build, then independent verification
+  that Home is present in Next's prerender manifest. The workflow declares
   `permissions: contents: read`.
 - **Dependabot** (`.github/dependabot.yml`) opens weekly npm update PRs, capped at
   5 open at a time, with major version bumps ignored.
 - **Deployment** is handled by Vercel from `main`.
 
-CI enforces lint, typecheck, the static SEO contract, and the production build.
+CI enforces lint, typecheck, the static SEO contract, the production build, and
+the post-build static Home invariant.
 
 ---
 
@@ -303,14 +321,13 @@ Honest boundaries of what is in this repository today:
 
 - **No automated test suite.** There is no test runner, no test files, and no
   test job in CI. Correctness rests on the type checker, ESLint, the build, and
-  `verify:seo`.
+  the `verify:seo` and `verify:build` contracts.
 - **Analytics are wired but inert.** Several CTAs carry `data-umami-event`
   attributes, but no Umami (or other analytics) script is loaded anywhere, so no
   events are collected.
-- **The `uy` branch of `content.ts` is vestigial here.** This repository serves
-  Argentina; the Uruguay site is a separate deployment. The branch survives
-  because `getCountryFromHost` defaults to `uy`, which is what non-production
-  hosts resolve to.
+- **No Argentina-only acquisition pages yet.** The route registry supports that
+  scope without publishing fake Uruguay alternates, but adding those pages is a
+  separate content and SEO phase.
 - **No country selector.** `lem-box.com` routing between markets is handled
   outside this repository.
 - **This site is not the operating platform.** Accounts, tracking and shipment
