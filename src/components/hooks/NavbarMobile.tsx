@@ -59,7 +59,7 @@ export default function NavbarMobile() {
             width={1200}
             height={400}
             priority
-            unoptimized
+            sizes="(min-width: 768px) 144px, 120px"
             className="h-10 w-auto"
           />
         </Link>
@@ -99,7 +99,7 @@ export default function NavbarMobile() {
                   width={1200}
                   height={400}
                   priority
-                  unoptimized
+                  sizes="(min-width: 768px) 144px, 120px"
                   className="h-10 w-auto"
                 />
               </Link>
