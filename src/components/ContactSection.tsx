@@ -76,7 +76,7 @@ function ContactForm() {
           (e.target as HTMLFormElement).reset();
           setNameValue("");
         }
-      } catch (err) {
+      } catch {
         setState({ ok: false, message: "Error de red. Probá nuevamente o por WhatsApp." });
       } finally {
         setPending(false);

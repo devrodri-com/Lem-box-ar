@@ -1,6 +1,4 @@
 "use client";
-// NOTE: To convert JPG/PNG to WEBP using Sharp:
-// sharp input.jpg -o output.webp
 
 import Image from "next/image";
 // src/components/Hero.tsx

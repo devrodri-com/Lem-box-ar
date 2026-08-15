@@ -148,7 +148,7 @@ place and lets the page stay a server component.
 | Language | TypeScript 5.9, `strict: true`, `noEmit` |
 | Icons | `lucide-react`, `react-icons` |
 | Transactional email | `resend` |
-| Image processing | `sharp` (build-time asset conversion, not runtime) |
+| Image handling | `next/image` over repository-controlled local assets |
 | Hosting | Vercel |
 | Linting | ESLint 9 with `next/core-web-vitals` and `next/typescript` |
 
@@ -156,7 +156,7 @@ place and lets the page stay a server component.
 
 ## Getting started
 
-Requires **Node.js 20** (the version CI runs on).
+Requires **Node.js 22.x** (the version declared by the project and used in CI).
 
 ```bash
 git clone https://github.com/devrodri-com/Lem-box-ar.git
@@ -206,12 +206,14 @@ RESEND_DEBUG_TO=debug@example.com
 | `npm run dev` | Dev server with Turbopack |
 | `npm run build` | Production build |
 | `npm start` | Serve a built app |
-| `npm run lint` | ESLint |
+| `npm run lint` | ESLint over the tracked source, middleware, configuration, and scripts |
+| `npm run lint:ci` | The same explicit ESLint scope, failing on any warning |
+| `npm run typecheck` | TypeScript validation without JavaScript output |
 | `npm run verify:seo` | Verify the regional SEO contract against the sources |
 | `npm run to-webp-all` | Batch-convert `public/` images to WebP (requires `cwebp` on PATH) |
 
-There is no `typecheck` script; type checking runs as part of `npm run build`, or
-directly with `npx tsc --noEmit`.
+Run `npm run lint:ci` and `npm run typecheck` locally before opening a pull
+request; CI enforces both commands.
 
 ---
 
@@ -240,13 +242,13 @@ the JPEG SOF marker directly).
 
 ### Last verified
 
-All four checks below were run against commit `2a708e4` on 2026-08-15; the live
-checks targeted the production deployment.
+These checks were most recently run on 2026-08-15; the live SEO checks targeted
+the production deployment.
 
 | Check | Command | Result |
 | --- | --- | --- |
-| Lint | `npm run lint` | Pass — 0 errors, 6 warnings |
-| Types | `npx tsc --noEmit` | Pass — no errors |
+| Lint | `npm run lint:ci` | Pass — 0 errors, 0 warnings |
+| Types | `npm run typecheck` | Pass — no errors |
 | Build | `npm run build` | Pass — 13 routes generated |
 | SEO contract (static + live + reciprocity) | `node scripts/verify-seo.mjs --url … --peer …` | Pass |
 
@@ -255,13 +257,14 @@ checks targeted the production deployment.
 ## CI/CD and quality controls
 
 - **GitHub Actions** (`.github/workflows/ci.yml`) runs on every pull request and
-  on pushes to `main`: Node 20, `npm ci`, `npm run build`, then `npm run lint`.
-  The workflow declares `permissions: contents: read`.
+  on pushes to `main`: Node 22, `npm ci`, lint with zero warnings, typecheck,
+  static SEO verification, then the production build. The workflow declares
+  `permissions: contents: read`.
 - **Dependabot** (`.github/dependabot.yml`) opens weekly npm update PRs, capped at
   5 open at a time, with major version bumps ignored.
 - **Deployment** is handled by Vercel from `main`.
 
-CI covers build and lint only; `verify:seo` is not part of it.
+CI enforces lint, typecheck, the static SEO contract, and the production build.
 
 ---
 
@@ -301,8 +304,6 @@ Honest boundaries of what is in this repository today:
 - **No automated test suite.** There is no test runner, no test files, and no
   test job in CI. Correctness rests on the type checker, ESLint, the build, and
   `verify:seo`.
-- **`verify:seo` is not enforced by CI.** It passes locally and against
-  production, but nothing blocks an SEO regression from merging.
 - **Analytics are wired but inert.** Several CTAs carry `data-umami-event`
   attributes, but no Umami (or other analytics) script is loaded anywhere, so no
   events are collected.
