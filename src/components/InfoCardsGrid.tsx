@@ -1,6 +1,4 @@
 // src/components/InfoCardsGrid.tsx
-"use client";
-
 import Image from "next/image";
 import * as Icons from "lucide-react";
 import type { LucideIcon } from "lucide-react";

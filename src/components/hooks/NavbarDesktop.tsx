@@ -89,7 +89,7 @@ export default function NavbarDesktop() {
             width={1200}
             height={400}
             priority
-            unoptimized
+            sizes="(min-width: 768px) 144px, 120px"
             className={[
               "transition-all duration-200",
               isShrunk ? "h-8 md:h-9" : "h-10 md:h-12",
