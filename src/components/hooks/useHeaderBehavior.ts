@@ -8,6 +8,7 @@ type Options = {
   ids?: readonly string[];
   rootMargin?: string;
   minRatio?: number;
+  routeKey?: string;
 };
 
 /**
@@ -21,6 +22,7 @@ export function useHeaderBehavior({
   ids = [],
   rootMargin = "-35% 0px -55% 0px",
   minRatio = 0.2,
+  routeKey,
 }: Options = {}) {
   const [isShrunk, setIsShrunk] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -45,14 +47,13 @@ export function useHeaderBehavior({
 
   // Scroll spy
   useEffect(() => {
+    setActiveId(null);
+
     const elements = ids
       .map((id) => document.getElementById(id))
       .filter((element): element is HTMLElement => element !== null);
 
-    if (!elements.length) {
-      setActiveId(null);
-      return;
-    }
+    if (!elements.length) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -76,7 +77,7 @@ export function useHeaderBehavior({
     elements.forEach((element) => observer.observe(element));
 
     return () => observer.disconnect();
-  }, [ids, rootMargin, minRatio]);
+  }, [ids, rootMargin, minRatio, routeKey]);
 
   return { isShrunk, activeId };
 }

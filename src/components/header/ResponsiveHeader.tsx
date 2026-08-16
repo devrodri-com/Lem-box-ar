@@ -12,6 +12,7 @@ import { useNavigationDialog } from "@/components/hooks/useNavigationDialog";
 
 const DIALOG_ID = "compact-navigation-dialog";
 const DIALOG_TITLE_ID = "compact-navigation-title";
+const FOCUS_RING = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]";
 const SECTION_IDS = ["hero", "quienes-somos", "beneficios", "como-funciona", "contacto"] as const;
 
 const NAV_ITEMS = [
@@ -24,6 +25,16 @@ const NAV_ITEMS = [
 ] as const;
 
 type NavItem = (typeof NAV_ITEMS)[number];
+type SectionId = (typeof SECTION_IDS)[number];
+type FocusTarget = SectionId | "page";
+
+type NavigationFocusRequest = readonly [
+  target: FocusTarget,
+  expectedPathname: string,
+  expectedHash: string | null,
+  token: number,
+  restoreScrollY?: number,
+];
 
 function useLocationHash(pathname: string) {
   const [hash, setHash] = useState<string | null>(null);
@@ -59,7 +70,7 @@ function HeaderNavLink({
       onClick={() => onNavigate?.(item)}
       className={[
         "rounded-lg font-medium no-underline whitespace-nowrap transition-colors",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]",
+        FOCUS_RING,
         compact ? "block w-full px-3 py-3" : "px-2 py-2 text-[15px]",
         active
           ? `${compact ? "bg-white/5 " : ""}text-[#eb6618] visited:text-[#eb6618]`
@@ -78,39 +89,61 @@ export default function ResponsiveHeader() {
     threshold: 10,
     ids: SECTION_IDS,
     rootMargin: "-35% 0px -55% 0px",
+    routeKey: pathname,
   });
   const logoRef = useRef<HTMLAnchorElement>(null);
   const { isOpen, openDialog, closeDialog, triggerRef, dialogRef } = useNavigationDialog(logoRef);
-  const previousPathname = useRef(pathname);
-  const pendingNavigationFocus = useRef<string | "page" | null>(null);
+  const nextFocusRequestToken = useRef(0);
+  const historyScrollPositions = useRef<Record<string, number>>({});
+  const previousLocation = useRef(`${pathname}${hash}`);
+  const [focusRequest, setFocusRequest] = useState<NavigationFocusRequest | null>(null);
 
-  const isActive = useCallback(
-    (item: NavItem) => {
-      if (item.sectionId) {
-        return pathname === "/" && (hash ? hash === item.sectionId : activeId === item.sectionId);
-      }
-      return pathname === item.href;
+  const requestNavigationFocus = useCallback(
+    (target: FocusTarget, expectedPathname: string, expectedHash: string | null, restoreScrollY?: number) => {
+      nextFocusRequestToken.current += 1;
+      setFocusRequest([target, expectedPathname, expectedHash, nextFocusRequestToken.current, restoreScrollY]);
     },
-    [activeId, hash, pathname],
+    [],
   );
 
-  useEffect(() => {
-    if (previousPathname.current !== pathname) {
-      previousPathname.current = pathname;
-      closeDialog(false);
+  const isActive = (item: NavItem) => {
+    if (item.sectionId) {
+      return pathname === "/" && (activeId ? activeId === item.sectionId : hash === item.sectionId);
     }
-  }, [closeDialog, pathname]);
+    return pathname === item.href;
+  };
 
   useEffect(() => {
-    const focusTarget = pendingNavigationFocus.current;
-    if (!focusTarget) return;
+    const currentLocation = `${pathname}${hash}`;
+    if (previousLocation.current === currentLocation) return;
+    previousLocation.current = currentLocation;
+    if (!isOpen) return;
+
+    const restoreScrollY = historyScrollPositions.current[location.href];
+    if (pathname === "/") {
+      const sectionId = SECTION_IDS.includes(hash as SectionId) ? hash as SectionId : "hero";
+      requestNavigationFocus(sectionId, pathname, hash, restoreScrollY);
+    } else {
+      requestNavigationFocus("page", pathname, null, restoreScrollY);
+    }
+    closeDialog(false);
+  }, [closeDialog, hash, isOpen, pathname, requestNavigationFocus]);
+
+  useEffect(() => {
+    if (!focusRequest) return;
+    const [targetName, expectedPathname, expectedHash, , restoreScrollY] = focusRequest;
+    if (pathname !== expectedPathname) return;
+    if (hash !== expectedHash) return;
 
     const frame = window.requestAnimationFrame(() => {
-      const target = focusTarget === "page"
+      const target = targetName === "page"
         ? document.querySelector<HTMLElement>("main h1") ?? document.querySelector<HTMLElement>("main")
-        : document.getElementById(focusTarget);
+        : document.getElementById(targetName);
 
-      if (!target) return;
+      if (!target) {
+        setFocusRequest(null);
+        return;
+      }
 
       const previousTabIndex = target.getAttribute("tabindex");
       target.setAttribute("tabindex", "-1");
@@ -123,26 +156,24 @@ export default function ResponsiveHeader() {
         },
         { once: true },
       );
-      pendingNavigationFocus.current = null;
+      if (restoreScrollY !== undefined) scrollTo(0, restoreScrollY);
+      setFocusRequest(null);
     });
 
     return () => window.cancelAnimationFrame(frame);
-  }, [hash, pathname]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const closeForHashNavigation = () => closeDialog(false);
-    window.addEventListener("hashchange", closeForHashNavigation);
-    return () => window.removeEventListener("hashchange", closeForHashNavigation);
-  }, [closeDialog, isOpen]);
+  }, [focusRequest, hash, pathname]);
 
   const closeForNavigation = (item: NavItem) => {
-    pendingNavigationFocus.current = item.sectionId ?? "page";
+    if (item.sectionId) {
+      requestNavigationFocus(item.sectionId, "/", item.sectionId);
+    } else {
+      requestNavigationFocus("page", item.href, null);
+    }
     closeDialog(false);
   };
 
   const closeForHomeNavigation = () => {
-    pendingNavigationFocus.current = "hero";
+    requestNavigationFocus("hero", "/", null);
     closeDialog(false);
   };
 
@@ -166,7 +197,7 @@ export default function ResponsiveHeader() {
           href="/"
           aria-label="Ir al inicio"
           onClick={closeForHomeNavigation}
-          className="inline-flex items-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]"
+          className={`inline-flex items-center rounded-lg ${FOCUS_RING}`}
         >
           <Image
             src="/logo.png"
@@ -182,7 +213,7 @@ export default function ResponsiveHeader() {
           aria-label="Cerrar menú"
           data-initial-focus
           onClick={() => closeDialog(true)}
-          className="inline-flex size-11 items-center justify-center rounded-lg bg-white/15 text-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]"
+          className={`inline-flex size-11 items-center justify-center rounded-lg bg-white/15 text-white hover:bg-white/20 ${FOCUS_RING}`}
         >
           <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M18 6L6 18M6 6l12 12" />
@@ -203,7 +234,7 @@ export default function ResponsiveHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeForExternalNavigation}
-              className="flex min-h-11 items-center gap-2 rounded-xl px-3 py-3 text-white no-underline hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]"
+              className={`flex min-h-11 items-center gap-2 rounded-xl px-3 py-3 text-white no-underline hover:bg-white/5 ${FOCUS_RING}`}
             >
               <Instagram aria-hidden="true" className="size-5" />
               Instagram
@@ -215,7 +246,7 @@ export default function ResponsiveHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeForExternalNavigation}
-              className="flex min-h-11 items-center gap-2 rounded-xl px-3 py-3 text-white no-underline hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]"
+              className={`flex min-h-11 items-center gap-2 rounded-xl px-3 py-3 text-white no-underline hover:bg-white/5 ${FOCUS_RING}`}
             >
               <FaWhatsapp aria-hidden="true" className="size-5" />
               WhatsApp
@@ -227,7 +258,7 @@ export default function ResponsiveHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeForExternalNavigation}
-              className="mt-2 inline-flex h-11 w-full items-center justify-center rounded-full border border-white/30 px-5 text-sm font-semibold text-white/90 no-underline transition hover:border-[#eb6618] hover:text-[#eb6618] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]"
+              className={`mt-2 inline-flex h-11 w-full items-center justify-center rounded-full border border-white/30 px-5 text-sm font-semibold text-white/90 no-underline transition hover:border-[#eb6618] hover:text-[#eb6618] ${FOCUS_RING}`}
             >
               Iniciar sesión
             </a>
@@ -238,7 +269,7 @@ export default function ResponsiveHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeForExternalNavigation}
-              className="mt-2 inline-flex h-11 w-full items-center justify-center rounded-full bg-[#eb6618] px-5 text-sm font-semibold text-white no-underline shadow-sm transition visited:!text-white hover:bg-[#d15612] hover:!text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]"
+              className={`mt-2 inline-flex h-11 w-full items-center justify-center rounded-full bg-[#eb6618] px-5 text-sm font-semibold text-white no-underline shadow-sm transition visited:!text-white hover:bg-[#d15612] hover:!text-white ${FOCUS_RING}`}
             >
               Registrarse
             </a>
@@ -264,7 +295,7 @@ export default function ResponsiveHeader() {
           ref={logoRef}
           href="/"
           aria-label="Ir al inicio"
-          className="inline-flex shrink-0 items-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]"
+          className={`inline-flex shrink-0 items-center rounded-lg ${FOCUS_RING}`}
         >
           <Image
             src="/logo.png"
@@ -287,8 +318,15 @@ export default function ResponsiveHeader() {
           aria-expanded={isOpen}
           aria-controls={DIALOG_ID}
           aria-haspopup="dialog"
-          onClick={openDialog}
-          className="ml-auto inline-flex size-11 items-center justify-center rounded-lg bg-white/10 text-white/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17] xl:hidden"
+          onClick={() => {
+            if (isOpen) {
+              closeDialog(true);
+            } else {
+              historyScrollPositions.current[location.href] = scrollY;
+              openDialog();
+            }
+          }}
+          className={`ml-auto inline-flex size-11 items-center justify-center rounded-lg bg-white/10 text-white/90 hover:text-white xl:hidden ${FOCUS_RING}`}
         >
           <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="3" y1="6" x2="21" y2="6" />
@@ -314,7 +352,7 @@ export default function ResponsiveHeader() {
             rel="noopener noreferrer"
             aria-label="Instagram de LEM-BOX"
             title="Instagram"
-            className="inline-flex size-11 items-center justify-center rounded-md text-white/90 no-underline transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]"
+            className={`inline-flex size-11 items-center justify-center rounded-md text-white/90 no-underline transition hover:text-white ${FOCUS_RING}`}
           >
             <Instagram aria-hidden="true" className="size-5" />
           </a>
@@ -324,7 +362,7 @@ export default function ResponsiveHeader() {
             rel="noopener noreferrer"
             aria-label="WhatsApp de LEM-BOX"
             title="WhatsApp"
-            className="inline-flex size-11 items-center justify-center rounded-md text-white/90 no-underline transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]"
+            className={`inline-flex size-11 items-center justify-center rounded-md text-white/90 no-underline transition hover:text-white ${FOCUS_RING}`}
           >
             <FaWhatsapp aria-hidden="true" className="size-5" />
           </a>
@@ -332,7 +370,7 @@ export default function ResponsiveHeader() {
             href="https://portal.lem-box.com/acceder"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-11 items-center justify-center whitespace-nowrap rounded-full border border-white/30 px-5 text-sm font-semibold text-white/90 no-underline transition hover:border-[#eb6618] hover:text-[#eb6618] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]"
+            className={`inline-flex h-11 items-center justify-center whitespace-nowrap rounded-full border border-white/30 px-5 text-sm font-semibold text-white/90 no-underline transition hover:border-[#eb6618] hover:text-[#eb6618] ${FOCUS_RING}`}
           >
             Iniciar sesión
           </a>
@@ -340,7 +378,7 @@ export default function ResponsiveHeader() {
             href="https://portal.lem-box.com/registro"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-11 items-center justify-center rounded-full bg-[#eb6618] px-5 text-sm font-semibold text-white no-underline shadow-sm transition visited:!text-white hover:bg-[#d15612] hover:!text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]"
+            className={`inline-flex h-11 items-center justify-center rounded-full bg-[#eb6618] px-5 text-sm font-semibold text-white no-underline shadow-sm transition visited:!text-white hover:bg-[#d15612] hover:!text-white ${FOCUS_RING}`}
           >
             Registrarse
           </a>
