@@ -149,7 +149,7 @@ export default function NavbarMobile() {
                 </li>
                 <li>
                   <a
-                    href="https://wa.me/5491151141467"
+                    href="https://wa.me/17544653318"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-3 py-3 rounded-xl text-white hover:text-white hover:bg-white/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#eb6618]"

@@ -30,7 +30,7 @@ export default function PrivacidadPage() {
               <ul className="list-disc list-inside marker:text-emerald-300/70 mt-2 space-y-1">
                 <li>Nombre completo, documento de identidad y datos de contacto.</li>
                 <li>Información de registro de cuenta (usuario y credenciales de acceso en forma segura).</li>
-                <li>Datos de cargas recibidas en nuestros depósitos.</li>
+                <li>Datos operativos de los paquetes y cargas recibidos, incluidos el nombre, el tracking, las fotografías del contenido y de la etiqueta de llegada, y los datos personales visibles en esa etiqueta, que pueden corresponder al usuario o a terceros vinculados con el envío.</li>
                 <li>Actividad de navegación en nuestro sitio (páginas visitadas, búsquedas, IP, navegador).</li>
                 <li>Correspondencia enviada por email, WhatsApp u otros canales.</li>
               </ul>
@@ -40,8 +40,8 @@ export default function PrivacidadPage() {
               <h2 className="text-xl font-semibold text-white">2. Uso de la información</h2>
               <div className="mt-2 h-px w-10 bg-white/10"></div>
               <ul className="list-disc list-inside marker:text-emerald-300/70 mt-2 space-y-1">
-                <li>Procesar y entregar cargas de forma segura y eficiente.</li>
-                <li>Gestionar casilleros, consolidaciones y almacenaje.</li>
+                <li>Procesar cargas y coordinar su entrega.</li>
+                <li>Gestionar direcciones de recepción, consolidaciones y almacenaje.</li>
                 <li>Enviar notificaciones sobre estado de envíos, facturación o soporte.</li>
                 <li>Comunicar promociones y novedades (opcional).</li>
                 <li>Cumplir con obligaciones legales y regulatorias.</li>
@@ -62,8 +62,7 @@ export default function PrivacidadPage() {
               <h2 className="text-xl font-semibold text-white">4. Almacenamiento y plazos</h2>
               <div className="mt-2 h-px w-10 bg-white/10"></div>
               <p>
-                Los paquetes se almacenan gratuitamente por 60 días desde su recepción en Miami. Vencido ese plazo, podrán considerarse
-                abandonados. Los datos de los usuarios se conservan mientras exista relación comercial o sea requerido por ley.
+                Los paquetes pueden permanecer almacenados por un máximo de 90 días corridos desde su recepción en Miami. Vencido ese plazo, LEM-BOX podrá notificar al usuario para que coordine su despacho, retiro o devolución y aplicar el procedimiento previsto en los Términos y Condiciones y la normativa aplicable. El vencimiento del plazo no implica abandono automático. Los datos personales se conservan mientras exista una relación comercial o durante los plazos exigidos por la normativa aplicable.
               </p>
             </section>
 
@@ -115,7 +114,7 @@ export default function PrivacidadPage() {
               </p>
             </section>
             <p className="text-xs text-emerald-100/60 mt-8">
-              Última actualización: {new Date().toLocaleDateString("es-ES")}
+              Última actualización: 16/8/2026
             </p>
           </div>
         </div>

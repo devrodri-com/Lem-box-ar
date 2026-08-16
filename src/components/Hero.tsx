@@ -27,7 +27,7 @@ export default function Hero() {
           Tu puente entre EE.UU. y Argentina
         </h1>
         <p className="mt-5 text-white/80 max-w-[48ch] mx-auto leading-relaxed">
-          Recepción y consolidación en Miami; ahorrás volumen y recibís en Argentina en tiempo y forma. Atención humana y seguimiento claro.
+          Recibimos tus compras en Miami, registramos cada paquete con fotos, consolidamos y reempacamos, y coordinamos una salida semanal hacia Argentina.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a

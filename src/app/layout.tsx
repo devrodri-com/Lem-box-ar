@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | LEM-BOX Argentina",
   },
   description:
-    "Comprás en EE.UU. y recibís en Argentina. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
+    "Recibimos tus compras en Miami, registramos cada paquete con fotos, consolidamos y reempacamos, y coordinamos una salida semanal hacia Argentina.",
   alternates: reciprocalAlternates("/"),
   manifest: "/manifest.webmanifest",
   icons: {
@@ -34,15 +34,15 @@ export const metadata: Metadata = {
   },
   openGraph: {
     ...regionalOpenGraph("/"),
-    title: "LEM-BOX Argentina — Envíos rápidos desde Miami",
+    title: "LEM-BOX Argentina — Logística desde Miami",
     description:
-      "Comprás en EE.UU. y recibís en Argentina. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
+      "Recibimos tus compras en Miami, registramos cada paquete con fotos, consolidamos y reempacamos, y coordinamos una salida semanal hacia Argentina.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "LEM-BOX Argentina — Envíos rápidos desde Miami",
+    title: "LEM-BOX Argentina — Logística desde Miami",
     description:
-      "Comprás en EE.UU. y recibís en Argentina. Recepción y consolidación con fotos. Salidas semanales desde Miami.",
+      "Recibimos tus compras en Miami, registramos cada paquete con fotos, consolidamos y reempacamos, y coordinamos una salida semanal hacia Argentina.",
     images: ["/og-lem-box-ar.jpg"],
   },
 };

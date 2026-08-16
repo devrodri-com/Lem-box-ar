@@ -5,12 +5,12 @@ type Step = {
 };
 
 const steps: Step[] = [
-  { id: 1, title: "Registro rápido", desc: "Activá tu dirección en Miami." },
-  { id: 2, title: "Recepción verificada", desc: "Chequeo con evidencia visual." },
-  { id: 3, title: "Consolidación inteligente", desc: "Pagá menos por peso y volumen." },
-  { id: 4, title: "Despacho semanal", desc: "Salidas programadas semanalmente." },
-  { id: 5, title: "Entrega sin fricción", desc: "Retiro en agencia o a domicilio." },
-  { id: 6, title: "Soporte humano", desc: "Acompañamiento por WhatsApp durante todo el proceso." },
+  { id: 1, title: "Consultá antes de comprar", desc: "Confirmá que el producto puede enviarse y conocé las condiciones." },
+  { id: 2, title: "Usá tu dirección en Miami", desc: "Enviá la compra a la dirección de recepción indicada." },
+  { id: 3, title: "Registramos el paquete", desc: "Cargamos fotos del contenido y la etiqueta, tu nombre y el tracking." },
+  { id: 4, title: "Consolidamos y reempacamos", desc: "Ambos servicios están incluidos según las necesidades de la operación." },
+  { id: 5, title: "Despachamos semanalmente", desc: "Actualizamos los estados desde recibido hasta en destino." },
+  { id: 6, title: "Coordinamos en Argentina", desc: "Acordamos entrega, retiro, agencia o transporte según cada caso." },
 ];
 
 export default function HowItWorks() {
@@ -35,7 +35,7 @@ export default function HowItWorks() {
           Tu envío en 6 pasos claros
         </h2>
         <p className="mt-3 max-w-2xl text-[15px] sm:text-base text-emerald-100/85 leading-relaxed md:leading-7">
-          Transparencia total en cada etapa. Sin sorpresas.
+          Información clara para coordinar cada etapa.
         </p>
 
         <ol
@@ -69,12 +69,12 @@ export default function HowItWorks() {
             aria-label="Crear cuenta en LEM-BOX"
             data-umami-event="cta-howitworks"
           >
-            Activá tu dirección gratis
+            Activá tu dirección
           </a>
         </div>
 
         <p className="mt-4 text-center text-[13.5px] md:text-[14px] text-emerald-100/70">
-          Envíos semanales • Seguimiento en tiempo real • Soporte humano
+          Una salida semanal • Seguimiento por estados • Soporte humano
         </p>
 
         <p className="sr-only">Lista de pasos del proceso de envío con soporte por WhatsApp.</p>

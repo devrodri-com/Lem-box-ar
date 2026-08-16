@@ -16,7 +16,7 @@ export default function AboutSection() {
         {/* Columna de texto */}
         <div className="col-span-12 lg:col-span-6">
           <span className="inline-block text-sm text-white/70 tracking-normal">
-            10 años en logística import-export EE.UU. ↔ Argentina
+            Experiencia previa en operaciones logísticas EE.UU. ↔ Argentina, con el servicio actualmente retomado
           </span>
           <h2
             id="quienes-somos-title"
@@ -25,13 +25,13 @@ export default function AboutSection() {
             {content.about.title}
           </h2>
           <p className="mt-6 text-white/90 text-[16px] sm:text-[17px] md:text-[18px] leading-[1.6] tracking-[0.01em] max-w-[34ch] md:max-w-[44ch]">
-            Somos operadores logísticos con base en Miami. Recibimos tus compras de EE.UU., las verificamos y las consolidamos para que lleguen a Argentina en tiempo y forma. Nuestro equipo atiende por WhatsApp y email durante todo el proceso.
+            Somos operadores logísticos con base en Miami. Coordinamos servicios para particulares y operaciones comerciales según las condiciones de cada caso, y también logística para clientes que venden en EE.UU. Nuestro equipo atiende por WhatsApp y email durante todo el proceso.
           </p>
           <ul className="mt-5 space-y-2 text-white/85 text-[15px] sm:text-[16px] leading-[1.6]">
-            <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Recepción en almacén propio en Miami</li>
-            <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Consolidación inteligente para ahorrar volumen</li>
-            <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Salidas aéreas semanales hacia Argentina</li>
-            <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Trazabilidad y atención humana en español</li>
+            <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Recepción documentada con fotos en Miami</li>
+            <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Consolidación y reempaque incluidos</li>
+            <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Una salida semanal hacia Argentina</li>
+            <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Seguimiento por estados y atención humana en español</li>
             <li className="flex items-start gap-2"><span className="self-center inline-block h-1.5 w-1.5 rounded-full bg-white/70" />Logística para terceros en EE.UU. (almacenaje y preparación de pedidos)</li>
           </ul>
 
