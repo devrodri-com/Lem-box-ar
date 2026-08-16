@@ -5,7 +5,7 @@ import { Plane, MessageCircle, Clock, DollarSign } from "lucide-react";
 const ITEMS = [
   { Icon: Plane, title: "Una salida semanal", desc: "De Miami hacia Argentina" },
   { Icon: Clock, title: "Cierre jueves 12 PM", desc: "Hora de Miami" },
-  { Icon: DollarSign, title: "Seguimiento por estados", desc: "De recibido a en destino" },
+  { Icon: DollarSign, title: "Seguimiento por estados", desc: "Desde recibido hasta en destino" },
   { Icon: MessageCircle, title: "Atención directa", desc: "WhatsApp y email" },
 ];
 

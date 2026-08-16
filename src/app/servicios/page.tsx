@@ -117,11 +117,11 @@ export default function ServiciosPage() {
             <div className="mb-3 h-px w-10 bg-emerald-300/20"></div>
             <ul className="space-y-2 text-sm leading-relaxed text-emerald-100/85">
               <li>• Una salida semanal a Argentina, con cierre el jueves a las 12 PM, hora de Miami</li>
-              <li>• Cobertura en todo Argentina mediante entrega, retiro, Andreani, Vía Cargo, OCA, transporte privado u otra alternativa acordada</li>
+              <li>• Cobertura en todo el país mediante entrega, retiro, Andreani, Vía Cargo, OCA, transporte privado u otra alternativa acordada</li>
               <li>• Seguimiento por estados: recibido, consolidado, en tránsito y en destino</li>
               <li>• Cotización según la operación, sin mínimo comercial fijo</li>
               <li>• Consulta previa para confirmar el producto y las condiciones de envío</li>
-              <li>• Entregas rápidas en todo EE.UU. con tarifas competitivas</li>
+              <li>• Envíos dentro de EE.UU. coordinados según las condiciones de cada operación</li>
               <li>• Logística inversa: devoluciones o reenvíos a proveedores o terceros</li>
               <li>• Flujo de trabajo ajustado a cada cliente</li>
             </ul>

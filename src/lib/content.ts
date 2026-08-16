@@ -36,7 +36,7 @@ export const siteContent = {
     },
     {
       title: "Atención directa",
-      description: "Atención directa por WhatsApp y correo, sin intermediarios.",
+      description: "Atención directa de nuestro equipo por WhatsApp y correo.",
       icon: "message-circle",
     },
     {

@@ -63,7 +63,7 @@ export default function TerminosPage() {
               <h2 className="text-xl font-semibold text-white">4. Almacenamiento y mercadería no retirada</h2>
               <div className="mt-2 h-px w-10 bg-white/10"></div>
               <p>
-                El plazo máximo de almacenamiento es de 90 días corridos desde la recepción de la mercadería en Miami. Si dentro de ese plazo el usuario no coordina su despacho, retiro o devolución, LEM-BOX podrá iniciar el procedimiento de disposición o destrucción de la mercadería no retirada, sujeto a las comunicaciones razonables y a la normativa aplicable. Los costos que pudieran corresponder deberán ser informados antes de su aplicación.
+                El plazo máximo de almacenamiento ordinario es de 90 días corridos desde la recepción de la mercadería en Miami. Vencido ese plazo, LEM-BOX podrá notificar al usuario para que coordine el despacho, retiro o devolución de la mercadería dentro del plazo indicado. Si la mercadería no es retirada, LEM-BOX podrá ejercer los derechos y procedimientos previstos por la normativa aplicable, incluida, cuando corresponda, su venta o disposición con las notificaciones y formalidades legalmente exigidas. El mero vencimiento de los 90 días no implica abandono automático ni autoriza la destrucción inmediata de la mercadería.
               </p>
             </section>
 
@@ -71,7 +71,7 @@ export default function TerminosPage() {
               <h2 className="text-xl font-semibold text-white">5. Seguro de la mercadería</h2>
               <div className="mt-2 h-px w-10 bg-white/10"></div>
               <p>
-                Salvo acuerdo escrito expreso, los servicios de LEM-BOX no incluyen seguro sobre la mercadería. El usuario debe consultar antes de comprar o enviar productos de alto valor o que requieran condiciones especiales.
+                Salvo acuerdo escrito expreso, los servicios de LEM-BOX no incluyen una póliza de seguro sobre la mercadería. Esta aclaración no excluye las obligaciones ni responsabilidades que no puedan limitarse por la normativa aplicable. Antes de comprar o enviar productos de alto valor o que requieran condiciones especiales, el usuario debe consultar su viabilidad y las condiciones de la operación.
               </p>
             </section>
 

@@ -62,7 +62,7 @@ export default function PrivacidadPage() {
               <h2 className="text-xl font-semibold text-white">4. Almacenamiento y plazos</h2>
               <div className="mt-2 h-px w-10 bg-white/10"></div>
               <p>
-                Los paquetes pueden permanecer almacenados por un máximo de 90 días corridos desde su recepción en Miami. Vencido ese plazo, la mercadería quedará sujeta al procedimiento aplicable a paquetes no retirados previsto en los Términos y Condiciones. Los datos personales se conservan mientras exista una relación comercial o durante los plazos exigidos por la normativa aplicable.
+                Los paquetes pueden permanecer almacenados por un máximo de 90 días corridos desde su recepción en Miami. Vencido ese plazo, LEM-BOX podrá notificar al usuario para que coordine su despacho, retiro o devolución y aplicar el procedimiento previsto en los Términos y Condiciones y la normativa aplicable. El vencimiento del plazo no implica abandono automático. Los datos personales se conservan mientras exista una relación comercial o durante los plazos exigidos por la normativa aplicable.
               </p>
             </section>
 
