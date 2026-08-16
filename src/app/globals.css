@@ -3,6 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --nav-h: 64px;
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --nav-h: 80px;
+  }
 }
 
 @theme inline {

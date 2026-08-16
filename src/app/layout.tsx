@@ -2,8 +2,7 @@
 
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import NavbarDesktop from "@/components/hooks/NavbarDesktop";
-import NavbarMobile from "@/components/hooks/NavbarMobile";
+import ResponsiveHeader from "@/components/header/ResponsiveHeader";
 import Footer from "@/components/Footer";
 import { SITE_URL, reciprocalAlternates, regionalOpenGraph } from "@/lib/seo";
 
@@ -47,15 +46,6 @@ export const metadata: Metadata = {
   },
 };
 
-function Header() {
-  return (
-    <>
-      <NavbarDesktop />
-      <NavbarMobile />
-    </>
-  );
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -64,11 +54,9 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="antialiased">
-        <>
-          <Header />
-          {children}
-          <Footer />
-        </>
+        <ResponsiveHeader />
+        {children}
+        <Footer />
       </body>
     </html>
   );

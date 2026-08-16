@@ -4,10 +4,10 @@
 import { useEffect, useRef, useState } from "react";
 
 type Options = {
-  threshold?: number;        // px de scroll para activar shrink
-  ids?: string[];            // ids de secciones para el spy
-  rootMargin?: string;       // margen del viewport para el spy
-  minRatio?: number;         // umbral de visibilidad
+  threshold?: number;
+  ids?: readonly string[];
+  rootMargin?: string;
+  minRatio?: number;
 };
 
 /**
@@ -23,7 +23,7 @@ export function useHeaderBehavior({
   minRatio = 0.2,
 }: Options = {}) {
   const [isShrunk, setIsShrunk] = useState(false);
-  const [activeId, setActiveId] = useState<string | null>(ids[0] ?? null);
+  const [activeId, setActiveId] = useState<string | null>(null);
   const raf = useRef<number>(0);
 
   // Shrink on scroll (con rAF)
@@ -45,7 +45,14 @@ export function useHeaderBehavior({
 
   // Scroll spy
   useEffect(() => {
-    if (!ids.length) return;
+    const elements = ids
+      .map((id) => document.getElementById(id))
+      .filter((element): element is HTMLElement => element !== null);
+
+    if (!elements.length) {
+      setActiveId(null);
+      return;
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -66,10 +73,7 @@ export function useHeaderBehavior({
       }
     );
 
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    elements.forEach((element) => observer.observe(element));
 
     return () => observer.disconnect();
   }, [ids, rootMargin, minRatio]);

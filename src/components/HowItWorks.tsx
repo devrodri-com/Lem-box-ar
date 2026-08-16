@@ -18,7 +18,8 @@ export default function HowItWorks() {
     <section
       id="como-funciona"
       aria-labelledby="como-funciona-title"
-      className="relative scroll-mt-24 bg-[#02120f] text-[#e6f6f1] border-t border-white/5"
+      className="relative bg-[#02120f] text-[#e6f6f1] border-t border-white/5"
+      style={{ scrollMarginTop: "var(--nav-h, 80px)" }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
         <div className="mb-3">
