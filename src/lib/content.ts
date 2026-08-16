@@ -9,24 +9,24 @@ export const siteContent = {
     title: "Quiénes somos",
     subtitle: "Somos operador logístico desde Miami → Argentina.",
     body: [
-      "Recepción y consolidación en Miami Gardens.",
-      "Salidas aéreas semanales a Buenos Aires.",
+      "Recepción documentada, consolidación y reempaque en Miami.",
+      "Una salida semanal hacia Argentina.",
     ],
   },
   benefits: [
     {
-      title: "Envíos rápidos y seguros",
-      description: "Consolidación inteligente + tracking en tiempo real para entregas rápidas y seguras.",
+      title: "Seguimiento claro por estados",
+      description: "Consultá en el sistema los estados recibido, consolidado, en tránsito y en destino.",
       icon: "truck",
     },
     {
-      title: "Envío aéreo semanal",
-      description: "Dos vuelos semanales desde Miami con cut-offs claros, para cumplir plazos reales.",
+      title: "Una salida semanal",
+      description: "El cierre es el jueves a las 12 PM, hora de Miami.",
       icon: "plane",
     },
     {
-      title: "Cuidado del paquete",
-      description: "Reempaque y refuerzo especial para envíos frágiles o de alto valor.",
+      title: "Consolidación y reempaque incluidos",
+      description: "Preparamos los paquetes según las necesidades de cada operación.",
       icon: "shield",
     },
     {
@@ -40,49 +40,61 @@ export const siteContent = {
       icon: "message-circle",
     },
     {
-      title: "Casillero privado en Miami",
-      description: "Cada cliente tiene una dirección exclusiva en Miami con fotos al recibir la carga para mayor control y transparencia.",
+      title: "Recepción documentada en Miami",
+      description: "Registramos fotos del contenido y la etiqueta de llegada, el nombre y el tracking visible.",
       icon: "package",
     },
   ],
   process: [
     {
       step: 1,
-      title: "Registro y creación de cuenta",
-      description: "Crea tu cuenta para empezar a enviar paquetes desde Miami a Argentina.",
+      title: "Consulta antes de comprar",
+      description: "Confirmá que el producto puede enviarse y conocé las condiciones de la operación.",
       icon: "user-plus",
     },
     {
       step: 2,
-      title: "Recepción y consolidación",
-      description: "Recibimos tus paquetes en Miami y los consolidamos para optimizar el envío.",
+      title: "Dirección de recepción en Miami",
+      description: "Usá la dirección de recepción indicada para tu operación.",
       icon: "box",
     },
     {
       step: 3,
-      title: "Envío aéreo semanal",
-      description: "Realizamos envíos a Buenos Aires cada semana para garantizar rapidez.",
+      title: "Recepción documentada",
+      description: "Registramos el paquete con fotos, nombre y tracking visible.",
       icon: "plane",
     },
     {
       step: 4,
-      title: "Entrega en destino",
-      description: "Recibe tus paquetes en la dirección que elijas en Argentina.",
+      title: "Consolidación y reempaque",
+      description: "Ambos servicios están incluidos según las necesidades de la operación.",
+      icon: "box",
+    },
+    {
+      step: 5,
+      title: "Despacho semanal",
+      description: "Despachamos una vez por semana y actualizamos los estados.",
+      icon: "plane",
+    },
+    {
+      step: 6,
+      title: "Coordinación en Argentina",
+      description: "Acordamos entrega, retiro, agencia o transporte según cada caso.",
       icon: "home",
     },
   ],
   faqs: [
     {
       q: "¿Cuánto tarda el envío?",
-      a: "El envío tarda aproximadamente 7 días desde Miami hasta Buenos Aires.",
+      a: "Después del cierre y los controles, normalmente la entrega puede empezar a coordinarse entre el martes y el miércoles de la semana siguiente. No es un plazo garantizado y puede variar según la operación.",
     },
     {
       q: "¿Puedo rastrear mi paquete?",
-      a: "Sí, ofrecemos seguimiento en tiempo real para todos los envíos.",
+      a: "Podés consultar en el sistema los estados recibido, consolidado, en tránsito y en destino.",
     },
     {
       q: "¿Qué tipo de productos puedo enviar?",
-      a: "Aceptamos la mayoría de productos, excepto aquellos prohibidos por la ley.",
+      a: "Consultanos antes de comprar para confirmar que el producto puede enviarse y conocer las condiciones de la operación.",
     },
   ],
 } as const;

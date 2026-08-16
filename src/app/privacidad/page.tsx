@@ -40,8 +40,8 @@ export default function PrivacidadPage() {
               <h2 className="text-xl font-semibold text-white">2. Uso de la información</h2>
               <div className="mt-2 h-px w-10 bg-white/10"></div>
               <ul className="list-disc list-inside marker:text-emerald-300/70 mt-2 space-y-1">
-                <li>Procesar y entregar cargas de forma segura y eficiente.</li>
-                <li>Gestionar casilleros, consolidaciones y almacenaje.</li>
+                <li>Procesar cargas y coordinar su entrega.</li>
+                <li>Gestionar direcciones de recepción, consolidaciones y almacenaje.</li>
                 <li>Enviar notificaciones sobre estado de envíos, facturación o soporte.</li>
                 <li>Comunicar promociones y novedades (opcional).</li>
                 <li>Cumplir con obligaciones legales y regulatorias.</li>
@@ -62,8 +62,7 @@ export default function PrivacidadPage() {
               <h2 className="text-xl font-semibold text-white">4. Almacenamiento y plazos</h2>
               <div className="mt-2 h-px w-10 bg-white/10"></div>
               <p>
-                Los paquetes se almacenan gratuitamente por 60 días desde su recepción en Miami. Vencido ese plazo, podrán considerarse
-                abandonados. Los datos de los usuarios se conservan mientras exista relación comercial o sea requerido por ley.
+                Los paquetes pueden permanecer almacenados por un máximo de 90 días corridos desde su recepción en Miami. Vencido ese plazo, la mercadería quedará sujeta al procedimiento aplicable a paquetes no retirados previsto en los Términos y Condiciones. Los datos personales se conservan mientras exista una relación comercial o durante los plazos exigidos por la normativa aplicable.
               </p>
             </section>
 
@@ -115,7 +114,7 @@ export default function PrivacidadPage() {
               </p>
             </section>
             <p className="text-xs text-emerald-100/60 mt-8">
-              Última actualización: {new Date().toLocaleDateString("es-ES")}
+              Última actualización: 16/8/2026
             </p>
           </div>
         </div>

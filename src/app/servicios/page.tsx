@@ -46,7 +46,7 @@ export default function ServiciosPage() {
             <div className="mb-3 h-px w-10 bg-emerald-300/20"></div>
             <ul className="space-y-2 text-sm leading-relaxed text-emerald-100/85">
               <li>• Recepción de paquetería y carga comercial</li>
-              <li>• Casillero privado identificado con número exclusivo</li>
+              <li>• Dirección de recepción indicada según cada operación</li>
               <li>• Entrega directa a tu propio agente si lo preferís</li>
               <li>• Espacios adaptables según el volumen y tipo de mercancía</li>
             </ul>
@@ -68,8 +68,8 @@ export default function ServiciosPage() {
           <div className="md:col-span-7">
             <div className="mb-3 h-px w-10 bg-emerald-300/20"></div>
             <ul className="space-y-2 text-sm leading-relaxed text-emerald-100/85">
-              <li>• Consolidación automática por cliente o destino</li>
-              <li>• Reempaque optimizado para reducir volumen y peso, o mejorar presentación</li>
+              <li>• Consolidación incluida según las necesidades de la operación</li>
+              <li>• Reempaque incluido según las necesidades de la operación</li>
               <li>• Etiquetado personalizado con códigos de barras o branding propio</li>
               <li>• Control de calidad básico: verificación visual del estado del producto</li>
               <li>• Revisión documental: facturas comerciales, valores FOB y requisitos aduaneros</li>
@@ -110,13 +110,17 @@ export default function ServiciosPage() {
               Envíos internacionales y domésticos
             </h2>
             <p className="mt-3 text-[15px] leading-relaxed text-emerald-100/80 max-w-prose">
-              Despachos adaptados a tu mercado. Llegamos a tus clientes dentro y fuera de EE.UU. sin fricción.
+              Coordinamos cada operación según su destino y sus condiciones.
             </p>
           </div>
           <div className="md:col-span-7">
             <div className="mb-3 h-px w-10 bg-emerald-300/20"></div>
             <ul className="space-y-2 text-sm leading-relaxed text-emerald-100/85">
-              <li>• Envíos semanales a Argentina, sin mínimos de carga</li>
+              <li>• Una salida semanal a Argentina, con cierre el jueves a las 12 PM, hora de Miami</li>
+              <li>• Cobertura en todo Argentina mediante entrega, retiro, Andreani, Vía Cargo, OCA, transporte privado u otra alternativa acordada</li>
+              <li>• Seguimiento por estados: recibido, consolidado, en tránsito y en destino</li>
+              <li>• Cotización según la operación, sin mínimo comercial fijo</li>
+              <li>• Consulta previa para confirmar el producto y las condiciones de envío</li>
               <li>• Entregas rápidas en todo EE.UU. con tarifas competitivas</li>
               <li>• Logística inversa: devoluciones o reenvíos a proveedores o terceros</li>
               <li>• Flujo de trabajo ajustado a cada cliente</li>
@@ -125,56 +129,51 @@ export default function ServiciosPage() {
         </div>
       </section>
 
-      {/* Tabla SLA */}
+      {/* Referencia operativa */}
       <section className="py-14 sm:py-16 border-b border-white/5">
         <div className="mx-auto max-w-7xl px-6">
           <h2 className="text-2xl md:text-3xl font-semibold text-white mb-6">
-            Niveles de servicio (SLA)
+            Referencia operativa
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left border-collapse">
               <thead>
                 <tr className="text-emerald-200/80 border-b border-white/10">
-                  <th scope="col" className="py-3 pr-4 w-[22%]">Servicio</th>
-                  <th scope="col" className="py-3 pr-4 w-[22%]">Cobertura</th>
-                  <th scope="col" className="py-3 pr-4 w-[18%]">SLA</th>
-                  <th scope="col" className="py-3 pr-4 w-[18%]">Cutoff</th>
-                  <th scope="col" className="py-3 w-[20%]">Seguimiento</th>
+                  <th scope="col" className="py-3 pr-4 w-[24%]">Etapa</th>
+                  <th scope="col" className="py-3 pr-4 w-[48%]">Cómo funciona</th>
+                  <th scope="col" className="py-3 w-[28%]">Referencia</th>
                 </tr>
               </thead>
               <tbody className="text-emerald-100/80">
                 <tr className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pr-4">Recepción</td>
-                  <td className="py-3 pr-4">Miami warehouse</td>
-                  <td className="py-3 pr-4 font-[tabular-nums]">24-48h</td>
-                  <td className="py-3 pr-4 font-[tabular-nums]">Lunes a Viernes</td>
-                  <td className="py-3">Foto + registro en sistema</td>
+                  <td className="py-3 pr-4">Recepción en Miami</td>
+                  <td className="py-3 pr-4">Foto del contenido y de la etiqueta, nombre y tracking visible</td>
+                  <td className="py-3">Se registra en el sistema</td>
                 </tr>
                 <tr className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pr-4">Consolidación</td>
-                  <td className="py-3 pr-4">Clientes con múltiples envíos</td>
-                  <td className="py-3 pr-4 font-[tabular-nums]">48h</td>
-                  <td className="py-3 pr-4 font-[tabular-nums]">Previo a cutoff aéreo</td>
-                  <td className="py-3">Etiqueta + guía única</td>
+                  <td className="py-3 pr-4">Consolidación y reempaque</td>
+                  <td className="py-3 pr-4">Incluidos según las necesidades de la operación</td>
+                  <td className="py-3">Antes del despacho</td>
                 </tr>
                 <tr className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pr-4">Envíos a Argentina</td>
-                  <td className="py-3 pr-4">A todo el país</td>
-                  <td className="py-3 pr-4 font-[tabular-nums]">Entrega estimada: 4 días hábiles desde cutoff</td>
-                  <td className="py-3 pr-4 font-[tabular-nums]">Jueves 15h</td>
-                  <td className="py-3">Tracking online</td>
+                  <td className="py-3 pr-4">Salida a Argentina</td>
+                  <td className="py-3 pr-4">Una salida semanal</td>
+                  <td className="py-3">Cierre jueves 12 PM, hora de Miami</td>
+                </tr>
+                <tr className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                  <td className="py-3 pr-4">Seguimiento</td>
+                  <td className="py-3 pr-4">Recibido, consolidado, en tránsito y en destino</td>
+                  <td className="py-3">Se actualiza por estados, sin actualización continua</td>
                 </tr>
                 <tr className="hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pr-4">Fulfillment e‑commerce</td>
-                  <td className="py-3 pr-4">EE.UU. doméstico</td>
-                  <td className="py-3 pr-4 font-[tabular-nums]">Same/next day</td>
-                  <td className="py-3 pr-4 font-[tabular-nums]">Orden confirmada</td>
-                  <td className="py-3">Tracking carrier</td>
+                  <td className="py-3 pr-4">Coordinación en Argentina</td>
+                  <td className="py-3 pr-4">Entrega, retiro, agencia o transporte acordado</td>
+                  <td className="py-3">Normalmente comienza entre martes y miércoles de la semana siguiente</td>
                 </tr>
               </tbody>
             </table>
             <p className="mt-3 text-xs text-emerald-100/60">
-              Operamos con vuelos semanales a Argentina: Sujeto a disponibilidad y condiciones operativas.
+              Después del cierre se despacha y se realizan controles. La referencia de martes o miércoles no es una garantía: puede variar por controles, condiciones operativas y disponibilidad, y requiere coordinación individual.
             </p>
           </div>
         </div>
@@ -204,7 +203,7 @@ export default function ServiciosPage() {
               data-umami-event="cta-servicios-register"
               className="inline-flex items-center justify-center rounded-xl bg-emerald-500/90 px-5 py-3 text-sm font-semibold text-[#02120f] hover:bg-emerald-400 transition-colors"
             >
-              Crear cuenta gratis
+              Crear cuenta
             </a>
             <a
               href="https://wa.me/17544653318"

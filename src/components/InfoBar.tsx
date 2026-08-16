@@ -3,10 +3,10 @@
 import { Plane, MessageCircle, Clock, DollarSign } from "lucide-react";
 
 const ITEMS = [
-  { Icon: Plane, title: "Salidas semanales", desc: "Desde Miami" },
-  { Icon: MessageCircle, title: "Atención directa", desc: "WhatsApp & Email" },
-  { Icon: Clock, title: "+10 años", desc: "Experiencia comprobada" },
-  { Icon: DollarSign, title: "Precios claros", desc: "Sin sorpresas" },
+  { Icon: Plane, title: "Una salida semanal", desc: "De Miami hacia Argentina" },
+  { Icon: Clock, title: "Cierre jueves 12 PM", desc: "Hora de Miami" },
+  { Icon: DollarSign, title: "Seguimiento por estados", desc: "De recibido a en destino" },
+  { Icon: MessageCircle, title: "Atención directa", desc: "WhatsApp y email" },
 ];
 
 export default function InfoBar() {
