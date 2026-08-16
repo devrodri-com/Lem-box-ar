@@ -12,9 +12,9 @@ export default function AboutSection() {
       className="relative bg-[#02120f] py-16 md:py-28 px-4 sm:px-6"
       style={{ scrollMarginTop: "var(--nav-h, 72px)" }}
     >
-      <div className="max-w-7xl mx-auto grid grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12 items-center">
         {/* Columna de texto */}
-        <div className="col-span-12 lg:col-span-6">
+        <div className="col-span-1 lg:col-span-6">
           <span className="inline-block text-sm text-white/70 tracking-normal">
             Experiencia previa en operaciones logísticas EE.UU. ↔ Argentina, con el servicio actualmente retomado
           </span>
@@ -59,7 +59,7 @@ export default function AboutSection() {
         </div>
 
         {/* Columna de imagen */}
-        <div className="col-span-12 lg:col-span-6 mt-10 lg:pt-6 xl:pt-8 flex justify-center order-first md:order-none">
+        <div className="col-span-1 lg:col-span-6 mt-10 lg:pt-6 xl:pt-8 flex justify-center order-first md:order-none">
           <div className="mx-auto w-full max-w-[280px] sm:max-w-[360px] md:max-w-[520px] lg:max-w-[580px] xl:max-w-[540px] 2xl:max-w-[620px]">
             <Image
               src="/logo1.png" // Logo real en /public/logo1.png
