@@ -30,7 +30,7 @@ export default function PrivacidadPage() {
               <ul className="list-disc list-inside marker:text-emerald-300/70 mt-2 space-y-1">
                 <li>Nombre completo, documento de identidad y datos de contacto.</li>
                 <li>Información de registro de cuenta (usuario y credenciales de acceso en forma segura).</li>
-                <li>Datos de cargas recibidas en nuestros depósitos.</li>
+                <li>Datos operativos de los paquetes y cargas recibidos, incluidos el nombre, el tracking, las fotografías del contenido y de la etiqueta de llegada, y los datos personales visibles en esa etiqueta, que pueden corresponder al usuario o a terceros vinculados con el envío.</li>
                 <li>Actividad de navegación en nuestro sitio (páginas visitadas, búsquedas, IP, navegador).</li>
                 <li>Correspondencia enviada por email, WhatsApp u otros canales.</li>
               </ul>

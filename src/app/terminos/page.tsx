@@ -55,7 +55,7 @@ export default function TerminosPage() {
                 <li>Los servicios incluyen almacenaje, consolidación y envío de mercancías.</li>
                 <li>El usuario es responsable por la licitud del contenido de sus envíos y por contar con documentación válida.</li>
                 <li>Está prohibido enviar bienes ilícitos, peligrosos o restringidos por normativa aduanera o de transporte.</li>
-                <li>LEM-BOX puede inspeccionar paquetes cuando así lo requieran autoridades competentes.</li>
+                <li>Al ingresar un paquete, LEM-BOX podrá abrirlo e inspeccionarlo para documentar la recepción y gestionar la operación. El registro incluye fotografías del contenido y de la etiqueta de llegada, junto con el nombre y el tracking visible, sin perjuicio de las inspecciones adicionales que puedan requerir las autoridades competentes.</li>
               </ul>
             </section>
 
@@ -107,7 +107,7 @@ export default function TerminosPage() {
               <h2 className="text-xl font-semibold text-white">9. Limitación de responsabilidad</h2>
               <div className="mt-2 h-px w-10 bg-white/10"></div>
               <ul className="list-disc list-inside marker:text-emerald-300/70 mt-2 space-y-1">
-                <li>LEM-BOX no es responsable por retrasos, daños o pérdidas causados por terceros, aduanas o fuerza mayor.</li>
+                <li>La responsabilidad por retrasos, daños o pérdidas se determinará según su causa y la normativa aplicable. LEM-BOX podrá quedar eximida únicamente cuando demuestre que la causa le fue totalmente ajena y estuvo fuera de su control razonable, como puede ocurrir ante determinados actos de autoridades, caso fortuito o fuerza mayor. Esta cláusula no limita la responsabilidad por actos u omisiones propios ni las obligaciones que no puedan excluirse por la normativa aplicable, incluso cuando intervengan terceros en la prestación del servicio.</li>
                 <li>No respondemos por información inexacta proporcionada por los usuarios.</li>
                 <li>No garantizamos disponibilidad continua del sitio; pueden existir interrupciones técnicas.</li>
               </ul>
