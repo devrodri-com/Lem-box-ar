@@ -17,28 +17,28 @@ export default function Hero() {
         className="absolute inset-0 -z-10 object-cover object-bottom md:object-[50%_60%]"
       />
       {/* Fondo: degradado + anillos suaves para profundidad */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#0f1a17] via-[#0f1a17]/90 to-[#0f1a17]/80" />
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(0,95,64,0.35),transparent_55%)]" />
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_bottom,rgba(235,102,24,0.12),transparent_60%)]" />
+      <div className="absolute inset-0 -z-10 hero-veil" />
+      <div className="absolute inset-0 -z-10 hero-veil-2" />
+      <div className="absolute inset-0 -z-10 hero-veil-3" />
       <div className="absolute inset-0 -z-10 bg-black/30" />
 
       <div className="px-6 w-full max-w-7xl">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-tight text-white max-w-[18ch] mx-auto">
+        <h1 className="h-display max-w-[18ch] mx-auto">
           Tu puente entre EE.UU. y Argentina
         </h1>
-        <p className="mt-5 text-white/80 max-w-[48ch] mx-auto leading-relaxed">
+        <p className="mt-5 lede max-w-[48ch] mx-auto">
           Recibimos tus compras en Miami, registramos cada paquete con fotos, consolidamos y reempacamos, y coordinamos una salida semanal hacia Argentina.
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
             href="https://portal.lem-box.com/registro"
-            className="w-full sm:w-auto inline-flex h-11 px-6 items-center justify-center rounded-full bg-[#eb6618] text-white font-semibold hover:bg-[#d15612] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618]/40 shadow-[0_8px_20px_-6px_rgba(235,102,24,0.45)]"
+            className="w-full sm:w-auto cta cta-primary fx-on-primary"
           >
             Crear cuenta
           </a>
           <a
             href="#como-funciona"
-            className="w-full sm:w-auto inline-flex h-11 px-6 items-center justify-center rounded-full border border-white/30 text-white/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+            className="w-full sm:w-auto cta cta-secondary fx"
           >
             Cómo funciona
           </a>
@@ -48,7 +48,7 @@ export default function Hero() {
       {/* Indicador de scroll */}
       <a
         href="#quienes-somos"
-        className="hidden sm:inline-flex absolute bottom-6 left-1/2 -translate-x-1/2 items-center justify-center rounded-full border border-white/20 text-white/70 hover:text-white hover:border-white/40 w-9 h-9 animate-bounce"
+        className="hidden sm:inline-flex absolute bottom-6 left-1/2 -translate-x-1/2 items-center justify-center rounded-full border scroll-cue w-9 h-9 animate-bounce fx"
         aria-label="Bajar a la siguiente sección"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>

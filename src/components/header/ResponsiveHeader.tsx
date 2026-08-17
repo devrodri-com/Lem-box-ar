@@ -12,7 +12,8 @@ import { useNavigationDialog } from "@/components/hooks/useNavigationDialog";
 
 const DIALOG_ID = "compact-navigation-dialog";
 const DIALOG_TITLE_ID = "compact-navigation-title";
-const FOCUS_RING = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#eb6618] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1a17]";
+const FOCUS_RING = "fx";
+const FOCUS_RING_ON_PRIMARY = "fx-on-primary";
 const SECTION_IDS = ["hero", "quienes-somos", "beneficios", "como-funciona", "contacto"] as const;
 
 const NAV_ITEMS = [
@@ -69,12 +70,10 @@ function HeaderNavLink({
       aria-current={active ? (item.sectionId ? "location" : "page") : undefined}
       onClick={() => onNavigate?.(item)}
       className={[
-        "rounded-lg font-medium no-underline whitespace-nowrap transition-colors",
+        "nav-link transition-colors",
         FOCUS_RING,
-        compact ? "block w-full px-3 py-3" : "px-2 py-2 text-[15px]",
-        active
-          ? `${compact ? "bg-white/5 " : ""}text-[#eb6618] visited:text-[#eb6618]`
-          : "text-white/90 hover:text-white visited:text-white",
+        compact ? "block w-full px-3 py-3" : "px-2 py-2",
+        active ? `${compact ? "bg-white/5 " : ""}nav-link-active` : "",
       ].join(" ")}
     >
       {item.label}
@@ -187,17 +186,17 @@ export default function ResponsiveHeader() {
       aria-modal="true"
       aria-labelledby={DIALOG_TITLE_ID}
       tabIndex={-1}
-      className="fixed inset-0 z-[9999] flex flex-col bg-[#0f1a17] text-white xl:hidden"
+      className="fixed inset-0 z-[9999] flex flex-col bg-ink text-white xl:hidden"
     >
       <h2 id={DIALOG_TITLE_ID} className="sr-only">
         Menú de navegación
       </h2>
-      <div className="flex h-16 shrink-0 items-center justify-between border-b border-white/10 px-4">
+      <div className="flex h-16 shrink-0 items-center justify-between border-b border-brandborder px-4">
         <Link
           href="/"
           aria-label="Ir al inicio"
           onClick={closeForHomeNavigation}
-          className={`inline-flex items-center rounded-lg ${FOCUS_RING}`}
+          className={`inline-flex items-center logo-link ${FOCUS_RING}`}
         >
           <Image
             src="/logo.png"
@@ -213,7 +212,7 @@ export default function ResponsiveHeader() {
           aria-label="Cerrar menú"
           data-initial-focus
           onClick={() => closeDialog(true)}
-          className={`inline-flex size-11 items-center justify-center rounded-lg bg-white/15 text-white hover:bg-white/20 ${FOCUS_RING}`}
+          className={`inline-flex size-11 items-center justify-center icon-button bg-white/15 hover:bg-white/20 ${FOCUS_RING}`}
         >
           <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M18 6L6 18M6 6l12 12" />
@@ -234,7 +233,7 @@ export default function ResponsiveHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeForExternalNavigation}
-              className={`flex min-h-11 items-center gap-2 rounded-xl px-3 py-3 text-white no-underline hover:bg-white/5 ${FOCUS_RING}`}
+              className={`flex min-h-11 items-center gap-2 rounded-[8px] px-3 py-3 text-white no-underline hover:bg-white/5 ${FOCUS_RING}`}
             >
               <Instagram aria-hidden="true" className="size-5" />
               Instagram
@@ -246,7 +245,7 @@ export default function ResponsiveHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeForExternalNavigation}
-              className={`flex min-h-11 items-center gap-2 rounded-xl px-3 py-3 text-white no-underline hover:bg-white/5 ${FOCUS_RING}`}
+              className={`flex min-h-11 items-center gap-2 rounded-[8px] px-3 py-3 text-white no-underline hover:bg-white/5 ${FOCUS_RING}`}
             >
               <FaWhatsapp aria-hidden="true" className="size-5" />
               WhatsApp
@@ -258,7 +257,7 @@ export default function ResponsiveHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeForExternalNavigation}
-              className={`mt-2 inline-flex h-11 w-full items-center justify-center rounded-full border border-white/30 px-5 text-sm font-semibold text-white/90 no-underline transition hover:border-[#eb6618] hover:text-[#eb6618] ${FOCUS_RING}`}
+              className={`mt-2 cta cta-secondary w-full transition ${FOCUS_RING}`}
             >
               Iniciar sesión
             </a>
@@ -269,7 +268,7 @@ export default function ResponsiveHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeForExternalNavigation}
-              className={`mt-2 inline-flex h-11 w-full items-center justify-center rounded-full bg-[#eb6618] px-5 text-sm font-semibold text-white no-underline shadow-sm transition visited:!text-white hover:bg-[#d15612] hover:!text-white ${FOCUS_RING}`}
+              className={`mt-2 cta cta-primary w-full transition ${FOCUS_RING_ON_PRIMARY}`}
             >
               Registrarse
             </a>
@@ -284,10 +283,8 @@ export default function ResponsiveHeader() {
       data-shrunk={isShrunk ? "true" : "false"}
       className={[
         "fixed inset-x-0 top-0 z-[100] h-16 transition-all duration-200",
-        "bg-[#005f40]/10 backdrop-blur-xl backdrop-saturate-150",
-        isShrunk
-          ? "xl:h-16 border-b border-white/10 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.35)]"
-          : "border-b border-transparent shadow-none xl:h-20",
+        "site-header",
+        isShrunk ? "xl:h-16 site-header-stuck" : "site-header-flat xl:h-20",
       ].join(" ")}
     >
       <div className="mx-auto flex h-full max-w-7xl items-center gap-4 px-4 md:px-6">
@@ -295,7 +292,7 @@ export default function ResponsiveHeader() {
           ref={logoRef}
           href="/"
           aria-label="Ir al inicio"
-          className={`inline-flex shrink-0 items-center rounded-lg ${FOCUS_RING}`}
+          className={`inline-flex shrink-0 items-center logo-link ${FOCUS_RING}`}
         >
           <Image
             src="/logo.png"
@@ -326,7 +323,7 @@ export default function ResponsiveHeader() {
               openDialog();
             }
           }}
-          className={`ml-auto inline-flex size-11 items-center justify-center rounded-lg bg-white/10 text-white/90 hover:text-white xl:hidden ${FOCUS_RING}`}
+          className={`ml-auto inline-flex size-11 items-center justify-center icon-button bg-white/10 xl:hidden ${FOCUS_RING}`}
         >
           <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="3" y1="6" x2="21" y2="6" />
@@ -352,7 +349,7 @@ export default function ResponsiveHeader() {
             rel="noopener noreferrer"
             aria-label="Instagram de LEM-BOX"
             title="Instagram"
-            className={`inline-flex size-11 items-center justify-center rounded-md text-white/90 no-underline transition hover:text-white ${FOCUS_RING}`}
+            className={`inline-flex size-11 items-center justify-center icon-button no-underline transition ${FOCUS_RING}`}
           >
             <Instagram aria-hidden="true" className="size-5" />
           </a>
@@ -362,7 +359,7 @@ export default function ResponsiveHeader() {
             rel="noopener noreferrer"
             aria-label="WhatsApp de LEM-BOX"
             title="WhatsApp"
-            className={`inline-flex size-11 items-center justify-center rounded-md text-white/90 no-underline transition hover:text-white ${FOCUS_RING}`}
+            className={`inline-flex size-11 items-center justify-center icon-button no-underline transition ${FOCUS_RING}`}
           >
             <FaWhatsapp aria-hidden="true" className="size-5" />
           </a>
@@ -370,7 +367,7 @@ export default function ResponsiveHeader() {
             href="https://portal.lem-box.com/acceder"
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-flex h-11 items-center justify-center whitespace-nowrap rounded-full border border-white/30 px-5 text-sm font-semibold text-white/90 no-underline transition hover:border-[#eb6618] hover:text-[#eb6618] ${FOCUS_RING}`}
+            className={`cta cta-secondary transition ${FOCUS_RING}`}
           >
             Iniciar sesión
           </a>
@@ -378,7 +375,7 @@ export default function ResponsiveHeader() {
             href="https://portal.lem-box.com/registro"
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-flex h-11 items-center justify-center rounded-full bg-[#eb6618] px-5 text-sm font-semibold text-white no-underline shadow-sm transition visited:!text-white hover:bg-[#d15612] hover:!text-white ${FOCUS_RING}`}
+            className={`cta cta-primary transition ${FOCUS_RING_ON_PRIMARY}`}
           >
             Registrarse
           </a>

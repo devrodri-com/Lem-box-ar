@@ -21,18 +21,18 @@ export default function Page() {
 
       <AboutSection />
 
-      <section id="beneficios" className="py-16 md:py-24 bg-[#02120f]" style={{ scrollMarginTop: "var(--nav-h, 80px)" }}>
+      <section id="beneficios" className="py-16 md:py-24 band" style={{ scrollMarginTop: "var(--nav-h, 80px)" }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-3">
             <p
-              className="text-[12px] uppercase tracking-[0.18em] text-emerald-200/70"
+              className="eyebrow"
               aria-label="Etiqueta de sección: Beneficios"
             >
               Beneficios
             </p>
-            <div className="mt-2 h-px w-10 bg-emerald-300/25" aria-hidden />
+            <div className="eyebrow-rule" aria-hidden />
           </div>
-          <h2 className="text-4xl md:text-5xl tracking-tight font-semibold text-white relative z-10">
+          <h2 className="h-section relative z-10">
             ¿Por qué elegirnos?
           </h2>
           <div className="mt-10">

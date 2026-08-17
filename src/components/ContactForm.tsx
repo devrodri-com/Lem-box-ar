@@ -9,7 +9,7 @@ export default function ContactForm() {
         type="submit"
         aria-busy={pending}
         disabled={pending}
-        className="w-full inline-flex h-12 items-center justify-center rounded-xl bg-emerald-500/90 px-6 text-sm font-semibold text-[#02120f] hover:bg-emerald-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#02120f] disabled:opacity-70 disabled:cursor-not-allowed hover:shadow-[0_0_0_1px_rgba(0,95,64,0.25)]"
+        className="w-full cta cta-operational h-12 transition-colors fx-on-operational disabled:opacity-70 disabled:cursor-not-allowed"
         data-umami-event="contact-submit"
       >
         {pending ? (
@@ -86,7 +86,7 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 max-w-xl">
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-emerald-100/80 mb-1">Nombre</label>
+        <label htmlFor="name" className="field-label">Nombre</label>
         <input
           id="name"
           name="name"
@@ -94,17 +94,17 @@ export default function ContactForm() {
           autoComplete="name"
           aria-required="true"
           aria-invalid={state.field === "name"}
-          className={`w-full rounded-xl bg-white/[0.08] border px-3.5 py-2.5 text-white placeholder-white/55 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 focus:border-emerald-300/30 ${state.field === "name" ? "border-red-400/40" : "border-white/10"}`}
+          className={`field fx-always ${state.field === "name" ? "field-invalid" : ""}`}
           placeholder="Tu nombre"
           value={nameValue}
           onChange={(e) => setNameValue(e.target.value)}
         />
         {state.field === "name" && !state.ok && (
-          <p className="mt-1 text-sm text-red-300/80">{state.message}</p>
+          <p className="mt-1 form-error">{state.message}</p>
         )}
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-emerald-100/80 mb-1">Email</label>
+        <label htmlFor="email" className="field-label">Email</label>
         <input
           id="email"
           type="email"
@@ -114,15 +114,15 @@ export default function ContactForm() {
           inputMode="email"
           aria-required="true"
           aria-invalid={state.field === "email"}
-          className={`w-full rounded-xl bg-white/[0.08] border px-3.5 py-2.5 text-white placeholder-white/55 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 focus:border-emerald-300/30 ${state.field === "email" ? "border-red-400/40" : "border-white/10"}`}
+          className={`field fx-always ${state.field === "email" ? "field-invalid" : ""}`}
           placeholder="tu@correo.com"
         />
         {state.field === "email" && !state.ok && (
-          <p className="mt-1 text-sm text-red-300/80">{state.message}</p>
+          <p className="mt-1 form-error">{state.message}</p>
         )}
       </div>
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-emerald-100/80 mb-1">Mensaje</label>
+        <label htmlFor="message" className="field-label">Mensaje</label>
         <textarea
           id="message"
           name="message"
@@ -131,11 +131,11 @@ export default function ContactForm() {
           minLength={12}
           aria-required="true"
           aria-invalid={state.field === "message"}
-          className={`w-full rounded-xl bg-white/[0.08] border px-3.5 py-2.5 text-white placeholder-white/55 focus:outline-none focus:ring-2 focus:ring-emerald-300/40 focus:border-emerald-300/30 ${state.field === "message" ? "border-red-400/40" : "border-white/10"}`}
+          className={`field fx-always ${state.field === "message" ? "field-invalid" : ""}`}
           placeholder="¿En qué te ayudamos?"
         />
         {state.field === "message" && !state.ok && (
-          <p className="mt-1 text-sm text-red-300/80">{state.message}</p>
+          <p className="mt-1 form-error">{state.message}</p>
         )}
       </div>
       <input
@@ -147,24 +147,24 @@ export default function ContactForm() {
         aria-hidden="true"
       />
       <SubmitButton pending={pending} />
-      <p className="mt-1 text-xs text-emerald-100/60">
+      <p className="mt-1 legal-note">
         Al enviar este formulario aceptás la{" "}
-        <a href="/privacidad" className="underline hover:text-white">Política de Privacidad</a>.
+        <a href="/privacidad" className="link-inline fx">Política de Privacidad</a>.
       </p>
       <a
         href={`https://wa.me/17544653318?text=${encodeURIComponent(nameValue ? `Hola, soy ${nameValue}. Quiero hacer una consulta.` : "Hola, quiero hacer una consulta.")}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 w-full inline-flex h-11 items-center justify-center rounded-xl border border-emerald-300/30 px-6 text-sm font-medium text-emerald-100 hover:border-emerald-300/50 hover:bg-emerald-400/5 transition-colors"
+        className="mt-4 w-full cta cta-operational-outline transition-colors fx"
         data-umami-event="contact-whatsapp"
         aria-label="Escribir por WhatsApp (ver Política de Privacidad en /privacidad)"
       >
         Escribir por WhatsApp <span className="sr-only">Se abre en una pestaña nueva</span>
       </a>
-      <p role="status" aria-live="polite" className={`mt-3 text-[14px] text-sm ${state.ok ? "text-emerald-200" : "text-emerald-100/80"}`}>
+      <p role="status" aria-live="polite" className={`mt-3 body-small ${state.ok ? "form-status-ok" : ""}`}>
         {state.message}
       </p>
-      <p className="mt-2 text-xs text-emerald-100/60">
+      <p className="mt-2 legal-note">
         Usamos tus datos solo para responderte.
       </p>
     </form>
