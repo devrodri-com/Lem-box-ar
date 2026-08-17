@@ -1,10 +1,25 @@
 // src/app/layout.tsx
 
 import type { Metadata, Viewport } from "next";
+import { Source_Sans_3, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import ResponsiveHeader from "@/components/header/ResponsiveHeader";
 import Footer from "@/components/Footer";
 import { SITE_URL, reciprocalAlternates, regionalOpenGraph } from "@/lib/seo";
+
+const brandSans = Source_Sans_3({
+  variable: "--font-brand-sans",
+  subsets: ["latin"],
+  display: "swap",
+  weight: "variable",
+});
+
+const brandMono = IBM_Plex_Mono({
+  variable: "--font-brand-mono",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "600"],
+});
 
 export const viewport: Viewport = {
   themeColor: "#02120F",
@@ -52,7 +67,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" className={`${brandSans.variable} ${brandMono.variable}`}>
       <body className="antialiased">
         <ResponsiveHeader />
         {children}

@@ -13,32 +13,32 @@ export const metadata: Metadata = {
 
 export default function TerminosPage() {
   return (
-    <main className="bg-[#02120f] text-[#e6f6f1]" aria-labelledby="terminos-title">
-      <section className="relative scroll-mt-24 border-b border-white/5 pt-24 md:pt-28">
+    <main className="band text-brandtext" aria-labelledby="terminos-title">
+      <section className="relative scroll-mt-24 section-divider pt-24 md:pt-28">
         <div className="mx-auto max-w-4xl px-6 py-16 md:py-20">
-          <h1 id="terminos-title" className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
+          <h1 id="terminos-title" className="h-sub">
             Términos y Condiciones
           </h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-emerald-100/80 max-w-3xl">
+          <p className="mt-4 lede max-w-3xl">
             Este documento establece los términos aplicables al uso del sitio y de los servicios de LEM-BOX. Al acceder o utilizar
             nuestros servicios, el usuario acepta estas condiciones.
           </p>
 
-          <div className="mt-10 space-y-10 text-[15px] leading-relaxed text-emerald-100/85">
+          <div className="mt-10 space-y-10 body-copy">
             <section>
-              <h2 className="text-xl font-semibold text-white">1. Aceptación de los Términos</h2>
-              <div className="mt-2 h-px w-10 bg-white/10"></div>
+              <h2 className="h-card">1. Aceptación de los Términos</h2>
+              <div className="eyebrow-rule mt-2"></div>
               <p>
                 El uso del sitio y de los servicios de LEM-BOX implica la aceptación plena de estos Términos y de la{" "}
-                <a href="/privacidad" className="underline hover:text-white">Política de Privacidad</a>.
+                <a href="/privacidad" className="link-inline fx">Política de Privacidad</a>.
                 Si el usuario no está de acuerdo, deberá abstenerse de utilizar el servicio.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-white">2. Registro de Usuario</h2>
-              <div className="mt-2 h-px w-10 bg-white/10"></div>
-              <ul className="list-disc list-inside marker:text-emerald-300/70 mt-2 space-y-1">
+              <h2 className="h-card">2. Registro de Usuario</h2>
+              <div className="eyebrow-rule mt-2"></div>
+              <ul className="list-disc list-inside legal-list mt-2 space-y-1">
                 <li>El registro requiere datos personales exactos, completos y actualizados.</li>
                 <li>Cada usuario recibe la dirección de recepción en Miami aplicable a su operación.</li>
                 <li>La cuenta es personal e intransferible; está prohibido tener múltiples cuentas.</li>
@@ -49,9 +49,9 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-white">3. Uso de los Servicios</h2>
-              <div className="mt-2 h-px w-10 bg-white/10"></div>
-              <ul className="list-disc list-inside marker:text-emerald-300/70 mt-2 space-y-1">
+              <h2 className="h-card">3. Uso de los Servicios</h2>
+              <div className="eyebrow-rule mt-2"></div>
+              <ul className="list-disc list-inside legal-list mt-2 space-y-1">
                 <li>Los servicios incluyen almacenaje, consolidación y envío de mercancías.</li>
                 <li>El usuario es responsable por la licitud del contenido de sus envíos y por contar con documentación válida.</li>
                 <li>Está prohibido enviar bienes ilícitos, peligrosos o restringidos por normativa aduanera o de transporte.</li>
@@ -60,24 +60,24 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-white">4. Almacenamiento y mercadería no retirada</h2>
-              <div className="mt-2 h-px w-10 bg-white/10"></div>
+              <h2 className="h-card">4. Almacenamiento y mercadería no retirada</h2>
+              <div className="eyebrow-rule mt-2"></div>
               <p>
                 El plazo máximo de almacenamiento ordinario es de 90 días corridos desde la recepción de la mercadería en Miami. Vencido ese plazo, LEM-BOX podrá notificar al usuario para que coordine el despacho, retiro o devolución de la mercadería dentro del plazo indicado. Si la mercadería no es retirada, LEM-BOX podrá ejercer los derechos y procedimientos previstos por la normativa aplicable, incluida, cuando corresponda, su venta o disposición con las notificaciones y formalidades legalmente exigidas. El mero vencimiento de los 90 días no implica abandono automático ni autoriza la destrucción inmediata de la mercadería.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-white">5. Seguro de la mercadería</h2>
-              <div className="mt-2 h-px w-10 bg-white/10"></div>
+              <h2 className="h-card">5. Seguro de la mercadería</h2>
+              <div className="eyebrow-rule mt-2"></div>
               <p>
                 Salvo acuerdo escrito expreso, los servicios de LEM-BOX no incluyen una póliza de seguro sobre la mercadería. Esta aclaración no excluye las obligaciones ni responsabilidades que no puedan limitarse por la normativa aplicable. Antes de comprar o enviar productos de alto valor o que requieran condiciones especiales, el usuario debe consultar su viabilidad y las condiciones de la operación.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-white">6. Modificaciones de estos Términos</h2>
-              <div className="mt-2 h-px w-10 bg-white/10"></div>
+              <h2 className="h-card">6. Modificaciones de estos Términos</h2>
+              <div className="eyebrow-rule mt-2"></div>
               <p>
                 LEM-BOX podrá actualizar estos Términos. Las modificaciones serán publicadas en el sitio y entrarán en vigencia desde
                 su publicación. Si el usuario no acepta las modificaciones, deberá comunicarlo y cerrar su cuenta.
@@ -85,8 +85,8 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-white">7. Enlaces a sitios de terceros</h2>
-              <div className="mt-2 h-px w-10 bg-white/10"></div>
+              <h2 className="h-card">7. Enlaces a sitios de terceros</h2>
+              <div className="eyebrow-rule mt-2"></div>
               <p>
                 El sitio puede contener enlaces a páginas de terceros. LEM-BOX no controla ni es responsable por sus contenidos o políticas.
                 El uso de sitios enlazados es bajo exclusivo riesgo del usuario.
@@ -94,19 +94,19 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-white">8. Protección de datos</h2>
-              <div className="mt-2 h-px w-10 bg-white/10"></div>
+              <h2 className="h-card">8. Protección de datos</h2>
+              <div className="eyebrow-rule mt-2"></div>
               <p>
                 Los datos personales se tratan conforme a la{" "}
-                <a href="/privacidad" className="underline hover:text-white">Política de Privacidad</a>. Implementamos medidas de seguridad
+                <a href="/privacidad" className="link-inline fx">Política de Privacidad</a>. Implementamos medidas de seguridad
                 y no almacenamos contraseñas en texto plano.
               </p>
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-white">9. Limitación de responsabilidad</h2>
-              <div className="mt-2 h-px w-10 bg-white/10"></div>
-              <ul className="list-disc list-inside marker:text-emerald-300/70 mt-2 space-y-1">
+              <h2 className="h-card">9. Limitación de responsabilidad</h2>
+              <div className="eyebrow-rule mt-2"></div>
+              <ul className="list-disc list-inside legal-list mt-2 space-y-1">
                 <li>La responsabilidad por retrasos, daños o pérdidas se determinará según su causa y la normativa aplicable. LEM-BOX podrá quedar eximida únicamente cuando demuestre que la causa le fue totalmente ajena y estuvo fuera de su control razonable, como puede ocurrir ante determinados actos de autoridades, caso fortuito o fuerza mayor. Esta cláusula no limita la responsabilidad por actos u omisiones propios ni las obligaciones que no puedan excluirse por la normativa aplicable, incluso cuando intervengan terceros en la prestación del servicio.</li>
                 <li>No respondemos por información inexacta proporcionada por los usuarios.</li>
                 <li>No garantizamos disponibilidad continua del sitio; pueden existir interrupciones técnicas.</li>
@@ -114,8 +114,8 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-white">10. Legislación aplicable</h2>
-              <div className="mt-2 h-px w-10 bg-white/10"></div>
+              <h2 className="h-card">10. Legislación aplicable</h2>
+              <div className="eyebrow-rule mt-2"></div>
               <p>
                 Estos Términos se rigen por la legislación aplicable y los tribunales competentes del lugar donde LEM-BOX presta
                 el servicio o donde se entregue la mercancía, según corresponda.
@@ -123,15 +123,15 @@ export default function TerminosPage() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-white">11. Contacto</h2>
-              <div className="mt-2 h-px w-10 bg-white/10"></div>
+              <h2 className="h-card">11. Contacto</h2>
+              <div className="eyebrow-rule mt-2"></div>
               <p>
                 Para consultas relacionadas con estos Términos, escribinos a{" "}
-                <a href="mailto:info@lem-box.com" className="underline hover:text-white">info@lem-box.com</a>.
+                <a href="mailto:info@lem-box.com" className="link-inline fx">info@lem-box.com</a>.
               </p>
             </section>
 
-            <p className="text-xs text-emerald-100/60 mt-8">
+            <p className="legal-note mt-8">
               Última actualización: 16/8/2026
             </p>
           </div>

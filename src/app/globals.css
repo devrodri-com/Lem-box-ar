@@ -1,8 +1,55 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   SISTEMA VISUAL APROBADO — HÍBRIDO AR-05B
+   Base: prototipo B (Confianza humana). Sans humanista para la voz, mono sólo
+   para el dato verificable, y el verde ascendido a marcador de proceso y estado.
+   Sustitución aprobada: el naranja de marca #EB6618 vuelve a ser el primario,
+   con etiqueta en tinta para alcanzar contraste AA sin desplazar la marca.
+   Firma tomada de C: la pestaña de manifiesto (bloque 28×3px + hairline de
+   ancho completo) abre cada etiqueta de sección.
+   ========================================================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- 7 tokens semánticos de marca --- */
+  --brand-ink: #071a15;
+  --brand-surface: #10241e;
+  --brand-surface-soft: #f2f6f3;
+  --brand-primary: #eb6618; /* NARANJA DE MARCA — conversión primaria */
+  --brand-secondary: #0f8f63; /* VERDE — proceso, estado, operación */
+  --brand-text: #e9f2ed;
+  --brand-border: #2b4239;
+
+  /* --- derivados --- */
+  --brand-border-strong: #3f5a4f;
+  --brand-text-muted: #b3c9be;
+  /* El primario lleva etiqueta en tinta: el hover aclara en lugar de oscurecer,
+     para que la etiqueta conserve AA (6.95:1). */
+  --brand-primary-hover: #f5822f;
+  --brand-secondary-hover: #12a473;
+  --brand-secondary-on-light: #0a6a49;
+  /* El verde de relleno es demasiado oscuro para TEXTO sobre fondo oscuro
+     (4.40:1). Este token cubre exclusivamente texto y grafismo sobre ink. */
+  --brand-secondary-on-dark: #19a97a;
+  /* El borde del campo debe alcanzar 3:1 contra la sección. */
+  --brand-field-border: #5f7f70;
+  --brand-field-bg: #0b2019;
+  --brand-placeholder: #9ab3a8;
+  --brand-danger-border: #f39178;
+  --brand-danger-text: #ffbaa6;
+  --brand-on-light: #14211c;
+  --brand-on-light-muted: #476055;
+  --brand-border-light: #d3ddd7;
+
+  /* --- 3 radios, 2 sombras --- */
+  --r-field: 6px;
+  --r-control: 14px;
+  --r-panel: 14px;
+  --s1: 0 1px 0 0 rgb(255 255 255 / 0.05), 0 14px 34px -26px rgb(0 0 0 / 0.85);
+  --s2: 0 12px 30px -22px rgb(0 0 0 / 0.7);
+
+  --background: var(--brand-ink);
+  --foreground: var(--brand-text);
   --nav-h: 64px;
 }
 
@@ -15,19 +62,500 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--brand-ink);
+  --color-surface: var(--brand-surface);
+  --color-surface-soft: var(--brand-surface-soft);
+  --color-primary: var(--brand-primary);
+  --color-secondary: var(--brand-secondary);
+  --color-brandtext: var(--brand-text);
+  --color-brandborder: var(--brand-border);
+  --font-sans: var(--font-brand-sans);
+  --font-mono: var(--font-brand-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-brand-sans), ui-sans-serif, system-ui, sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--brand-secondary);
+    color: #ffffff;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* --- FIRMA: pestaña de manifiesto ------------------------------------
+     La etiqueta de sección que ya existía se apoya en un bloque sólido de
+     28×3px y la regla decorativa pasa a ser un hairline de ancho completo.
+     El bloque es verde porque marca sección, no conversión: el naranja
+     queda reservado a la acción primaria. */
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-brand-mono), ui-monospace, monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brand-secondary-on-dark);
+  }
+
+  .eyebrow::before {
+    content: "";
+    flex: none;
+    width: 28px;
+    height: 3px;
+    background: var(--brand-secondary-on-dark);
+  }
+
+  .eyebrow-center {
+    justify-content: center;
+  }
+
+  .eyebrow-rule {
+    margin-top: 0.75rem;
+    height: 1px;
+    width: 100%;
+    background: var(--brand-border-strong);
+  }
+
+  /* --- Escala tipográfica --- */
+  .h-display {
+    font-size: clamp(2.125rem, 1.5rem + 2.5vw, 3rem);
+    line-height: 1.12;
+    letter-spacing: -0.012em;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .h-section {
+    font-size: clamp(1.6875rem, 1.25rem + 1.8vw, 2.375rem);
+    line-height: 1.18;
+    letter-spacing: -0.008em;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .h-sub {
+    font-size: clamp(1.375rem, 1.1rem + 1.05vw, 1.8125rem);
+    line-height: 1.24;
+    letter-spacing: -0.006em;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .h-card {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .lede {
+    font-size: 1.0625rem;
+    line-height: 1.68;
+    color: var(--brand-text);
+  }
+
+  .body-copy {
+    font-size: 1.0625rem;
+    line-height: 1.68;
+    color: var(--brand-text-muted);
+  }
+
+  .body-small {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--brand-text-muted);
+  }
+
+  .meta {
+    font-family: var(--font-brand-mono), ui-monospace, monospace;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--brand-text-muted);
+  }
+
+  /* --- Sistema de CTA: rectángulo redondeado 14px, sin píldora --- */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.875rem;
+    padding-inline: 1.625rem;
+    border-radius: var(--r-control);
+    border: 1.5px solid transparent;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  /* Naranja de marca con etiqueta en tinta: 5.52:1. */
+  .cta-primary {
+    background: var(--brand-primary);
+    color: var(--brand-ink);
+    box-shadow: var(--s2);
+  }
+
+  .cta-primary:hover {
+    background: var(--brand-primary-hover);
+    color: var(--brand-ink);
+  }
+
+  .cta-primary:visited {
+    color: var(--brand-ink);
+  }
+
+  .cta-secondary {
+    background: transparent;
+    border-color: var(--brand-secondary-on-dark);
+    color: var(--brand-text);
+  }
+
+  .cta-secondary:hover {
+    border-color: var(--brand-secondary-hover);
+    color: #ffffff;
+  }
+
+  .cta-operational {
+    background: var(--brand-secondary-on-dark);
+    color: var(--brand-ink);
+  }
+
+  .cta-operational:hover {
+    background: var(--brand-secondary-hover);
+    color: var(--brand-ink);
+  }
+
+  .cta-operational-outline {
+    background: transparent;
+    border-color: var(--brand-border-strong);
+    color: var(--brand-text);
+  }
+
+  .cta-operational-outline:hover {
+    border-color: var(--brand-secondary);
+    color: #ffffff;
+  }
+
+  /* --- Superficies --- */
+  .panel {
+    background: var(--brand-surface);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--r-panel);
+    box-shadow: var(--s1);
+  }
+
+  .panel-flat {
+    background: var(--brand-surface);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--r-panel);
+  }
+
+  .band {
+    background: var(--brand-ink);
+    border-top: 1px solid var(--brand-border);
+  }
+
+  .band-soft {
+    background: var(--brand-surface-soft);
+    border-bottom: 1px solid var(--brand-border-light);
+  }
+
+  /* Cada celda operativa abre con un riel verde de estado. */
+  .band-soft-divider {
+    border-color: var(--brand-border-light);
+    border-left: 3px solid var(--brand-secondary-on-light);
+  }
+
+  .band-soft-title {
+    color: var(--brand-on-light);
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .band-soft-meta {
+    font-family: var(--font-brand-mono), ui-monospace, monospace;
+    color: var(--brand-on-light-muted);
+    font-size: 0.75rem;
+  }
+
+  .icon-on-light {
+    color: var(--brand-secondary-on-light);
+  }
+
+  /* --- Hero --- */
+  .hero-veil {
+    background: linear-gradient(
+      to bottom,
+      var(--brand-ink) 0%,
+      color-mix(in srgb, var(--brand-ink) 88%, transparent) 50%,
+      color-mix(in srgb, var(--brand-ink) 74%, transparent) 100%
+    );
+  }
+
+  .hero-veil-2 {
+    background: radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--brand-secondary) 26%, transparent),
+      transparent 58%
+    );
+  }
+
+  .hero-veil-3 {
+    background: radial-gradient(
+      ellipse at bottom,
+      color-mix(in srgb, var(--brand-primary) 12%, transparent),
+      transparent 62%
+    );
+  }
+
+  .scroll-cue {
+    border-color: var(--brand-border-strong);
+    color: var(--brand-text-muted);
+  }
+
+  .scroll-cue:hover {
+    border-color: var(--brand-secondary);
+    color: #ffffff;
+  }
+
+  /* --- Tarjetas --- */
+  .card-hover:hover {
+    border-color: var(--brand-secondary);
+  }
+
+  .media-scrim {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--brand-ink) 40%, transparent),
+      color-mix(in srgb, var(--brand-ink) 10%, transparent) 45%,
+      color-mix(in srgb, var(--brand-ink) 58%, transparent)
+    );
+  }
+
+  .icon-chip {
+    border-radius: var(--r-field);
+    background: color-mix(in srgb, var(--brand-secondary) 22%, transparent);
+    color: var(--brand-secondary-on-dark);
+  }
+
+  /* Riel de proceso en los seis pasos. */
+  .step-card {
+    min-height: 130px;
+    border-left: 3px solid var(--brand-secondary-on-dark);
+  }
+
+  .step-badge {
+    border-radius: var(--r-field);
+    border: 1.5px solid var(--brand-secondary-on-dark);
+    background: color-mix(in srgb, var(--brand-secondary) 14%, transparent);
+  }
+
+  .step-number {
+    font-family: var(--font-brand-mono), ui-monospace, monospace;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--brand-text);
+  }
+
+  /* --- Formulario --- */
+  .field {
+    width: 100%;
+    border-radius: var(--r-field);
+    background: var(--brand-field-bg);
+    border: 1.5px solid var(--brand-field-border);
+    padding: 0.6875rem 0.875rem;
+    color: #ffffff;
+    font-size: 1rem;
+  }
+
+  .field::placeholder {
+    color: var(--brand-placeholder);
+  }
+
+  .field-invalid {
+    border-color: var(--brand-danger-border);
+  }
+
+  .field-label {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--brand-text);
+    margin-bottom: 0.375rem;
+  }
+
+  .form-error {
+    font-size: 0.875rem;
+    color: var(--brand-danger-text);
+  }
+
+  .form-status-ok {
+    color: var(--brand-secondary-on-dark);
+  }
+
+  .legal-note {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--brand-text-muted);
+  }
+
+  .legal-list {
+    color: var(--brand-text-muted);
+  }
+
+  .legal-list::marker,
+  .legal-list > li::marker {
+    color: var(--brand-secondary-on-dark);
+  }
+
+  .link-quiet {
+    color: var(--brand-text-muted);
+    text-decoration: none;
+  }
+
+  .link-quiet:hover {
+    color: #ffffff;
+  }
+
+  .link-inline {
+    color: var(--brand-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--brand-secondary-on-dark);
+  }
+
+  .link-inline:hover {
+    color: #ffffff;
+  }
+
+  /* --- Header --- */
+  .site-header {
+    background: color-mix(in srgb, var(--brand-ink) 92%, transparent);
+    backdrop-filter: blur(16px) saturate(130%);
+    -webkit-backdrop-filter: blur(16px) saturate(130%);
+  }
+
+  .site-header-flat {
+    border-bottom: 1px solid transparent;
+  }
+
+  .site-header-stuck {
+    border-bottom: 1px solid var(--brand-border);
+    box-shadow: var(--s2);
+  }
+
+  .nav-link {
+    border-radius: var(--r-field);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--brand-text);
+  }
+
+  .nav-link:hover {
+    color: #ffffff;
+  }
+
+  .nav-link-active,
+  .nav-link-active:visited {
+    color: var(--brand-secondary-on-dark);
+  }
+
+  .logo-link {
+    border-radius: var(--r-control);
+  }
+
+  .icon-button {
+    border-radius: var(--r-field);
+    color: var(--brand-text);
+  }
+
+  .icon-button:hover {
+    color: #ffffff;
+  }
+
+  /* --- Footer --- */
+  .site-footer {
+    background: var(--brand-surface);
+    color: var(--brand-text-muted);
+    border-top: 1px solid var(--brand-border);
+  }
+
+  .footer-wordmark {
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: #ffffff;
+  }
+
+  .footer-heading {
+    font-family: var(--font-brand-mono), ui-monospace, monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brand-secondary-on-dark);
+  }
+
+  /* --- Secciones y tabla --- */
+  .section-divider {
+    border-bottom: 1px solid var(--brand-border);
+  }
+
+  .data-table {
+    font-size: 0.9375rem;
+    color: var(--brand-text-muted);
+  }
+
+  .data-table-head {
+    color: var(--brand-secondary-on-dark);
+    border-bottom: 2px solid var(--brand-secondary-on-dark);
+    font-family: var(--font-brand-mono), ui-monospace, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .data-table-row {
+    border-bottom: 1px solid var(--brand-border);
+  }
+
+  .data-table-row-last {
+    border-bottom: 0;
+  }
+}
+
+/* --- Anillo de foco (fuera de capa: debe ganar sobre las utilidades) --- */
+.fx:focus-visible {
+  outline: 2px solid var(--brand-secondary-on-dark);
+  outline-offset: 2px;
+}
+
+.fx-on-primary:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.fx-on-operational:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.fx-on-light:focus-visible {
+  outline: 2px solid var(--brand-secondary-on-light);
+  outline-offset: 2px;
+}
+
+.fx-always:focus {
+  outline: 2px solid var(--brand-secondary-on-dark);
+  outline-offset: 2px;
 }
