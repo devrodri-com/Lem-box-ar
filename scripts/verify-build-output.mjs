@@ -4,13 +4,13 @@ import { readFile } from "node:fs/promises";
 
 const BUILD_ARTIFACT = ".next/prerender-manifest.json";
 const EXPECTED_MANIFEST_VERSION = 4;
-const HOME_ROUTE = "/";
+const EXPECTED_STATIC_ROUTES = ["/", "/como-funciona"];
 
 function reportFailure(reason, mode = "DYNAMIC_OR_NOT_PRERENDERED") {
   console.error("BUILD_OUTPUT_VERIFICATION=FAIL");
   console.error(`BUILD_ARTIFACT=${BUILD_ARTIFACT}`);
-  console.error(`HOME_ROUTE=${HOME_ROUTE}`);
-  console.error(`HOME_BUILD_MODE=${mode}`);
+  console.error(`EXPECTED_STATIC_ROUTES=${EXPECTED_STATIC_ROUTES.join(",")}`);
+  console.error(`BUILD_MODE=${mode}`);
   console.error(`ERROR=${reason}`);
   process.exitCode = 1;
 }
@@ -53,21 +53,23 @@ async function main() {
     return;
   }
 
-  if (!Object.prototype.hasOwnProperty.call(manifest.routes, HOME_ROUTE)) {
-    reportFailure("HOME_ROUTE_NOT_PRERENDERED");
-    return;
-  }
+  for (const route of EXPECTED_STATIC_ROUTES) {
+    if (!Object.prototype.hasOwnProperty.call(manifest.routes, route)) {
+      reportFailure(`ROUTE_NOT_PRERENDERED:${route}`);
+      return;
+    }
 
-  if (manifest.routes[HOME_ROUTE]?.srcRoute !== HOME_ROUTE) {
-    reportFailure("HOME_ROUTE_PRERENDER_ENTRY_INVALID", "BUILD_ARTIFACT_INVALID");
-    return;
+    if (manifest.routes[route]?.srcRoute !== route) {
+      reportFailure(`ROUTE_PRERENDER_ENTRY_INVALID:${route}`, "BUILD_ARTIFACT_INVALID");
+      return;
+    }
   }
 
   console.log("BUILD_OUTPUT_VERIFICATION=PASS");
   console.log(`BUILD_ARTIFACT=${BUILD_ARTIFACT}`);
   console.log(`BUILD_ARTIFACT_VERSION=${manifest.version}`);
-  console.log(`HOME_ROUTE=${HOME_ROUTE}`);
-  console.log("HOME_BUILD_MODE=STATIC");
+  console.log(`STATIC_ROUTES=${EXPECTED_STATIC_ROUTES.join(",")}`);
+  console.log("BUILD_MODE=STATIC");
 }
 
 await main();

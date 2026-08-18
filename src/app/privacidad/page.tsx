@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { reciprocalAlternates, regionalOpenGraph } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidad | LEM-BOX",
+  title: "Política de Privacidad",
   description:
     "Conocé cómo LEM-BOX protege y utiliza tus datos personales. Transparencia y seguridad en la gestión de tu información.",
   robots: { index: true },

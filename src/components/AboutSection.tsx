@@ -39,21 +39,21 @@ export default function AboutSection() {
           <div className="mt-10 flex flex-wrap items-center gap-3 sm:gap-4">
             <a
               href="/servicios"
+              data-analytics-event="about-services"
+              data-analytics-surface="home-about"
+              data-analytics-destination="/servicios"
               className="w-full sm:w-auto cta cta-primary fx-on-primary"
             >
               Ver servicios
             </a>
             <a
-              href="#como-funciona"
+              href="/como-funciona"
+              data-analytics-event="about-process"
+              data-analytics-surface="home-about"
+              data-analytics-destination="/como-funciona"
               className="w-full sm:w-auto cta cta-secondary fx"
             >
               Cómo funciona →
-            </a>
-            <a
-              href="#contacto"
-              className="w-full sm:w-auto cta cta-secondary fx"
-            >
-              Contacto
             </a>
           </div>
         </div>

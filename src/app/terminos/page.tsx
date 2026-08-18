@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { reciprocalAlternates, regionalOpenGraph } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Términos y Condiciones | LEM-BOX",
+  title: "Términos y Condiciones",
   description:
     "Condiciones de uso de LEM-BOX. Reglas de registro, uso del servicio, limitaciones de responsabilidad y enlaces a terceros.",
   robots: { index: true },

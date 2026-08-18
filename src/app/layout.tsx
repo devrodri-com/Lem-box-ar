@@ -6,6 +6,7 @@ import "./globals.css";
 import ResponsiveHeader from "@/components/header/ResponsiveHeader";
 import Footer from "@/components/Footer";
 import { SITE_URL, reciprocalAlternates, regionalOpenGraph } from "@/lib/seo";
+import StructuredData from "@/components/StructuredData";
 
 const brandSans = Source_Sans_3({
   variable: "--font-brand-sans",
@@ -28,7 +29,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "LEM-BOX — Logística Miami ↔ Argentina",
+    default: "Envíos desde Miami a Argentina — LEM-BOX",
     template: "%s | LEM-BOX Argentina",
   },
   description:
@@ -48,13 +49,13 @@ export const metadata: Metadata = {
   },
   openGraph: {
     ...regionalOpenGraph("/"),
-    title: "LEM-BOX Argentina — Logística desde Miami",
+    title: "Envíos desde Miami a Argentina — LEM-BOX",
     description:
       "Recibimos tus compras en Miami, registramos cada paquete con fotos, consolidamos y reempacamos, y coordinamos una salida semanal hacia Argentina.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "LEM-BOX Argentina — Logística desde Miami",
+    title: "Envíos desde Miami a Argentina — LEM-BOX",
     description:
       "Recibimos tus compras en Miami, registramos cada paquete con fotos, consolidamos y reempacamos, y coordinamos una salida semanal hacia Argentina.",
     images: ["/og-lem-box-ar.jpg"],
@@ -69,6 +70,34 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${brandSans.variable} ${brandMono.variable}`}>
       <body className="antialiased">
+        <StructuredData
+          data={{
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "LEM-BOX",
+            url: SITE_URL,
+            logo: `${SITE_URL}/logo.png`,
+            email: "info@lem-box.com",
+            telephone: "+1-754-465-3318",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "20200 NW 2nd Ave, Unit 108",
+              addressLocality: "Miami",
+              addressRegion: "FL",
+              postalCode: "33169",
+              addressCountry: "US",
+            },
+          }}
+        />
+        <StructuredData
+          data={{
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "LEM-BOX Argentina",
+            url: SITE_URL,
+            inLanguage: "es-AR",
+          }}
+        />
         <ResponsiveHeader />
         {children}
         <Footer />

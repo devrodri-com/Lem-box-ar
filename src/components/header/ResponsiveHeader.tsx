@@ -14,20 +14,18 @@ const DIALOG_ID = "compact-navigation-dialog";
 const DIALOG_TITLE_ID = "compact-navigation-title";
 const FOCUS_RING = "fx";
 const FOCUS_RING_ON_PRIMARY = "fx-on-primary";
-const SECTION_IDS = ["hero", "quienes-somos", "beneficios", "como-funciona", "contacto"] as const;
+const SECTION_IDS = ["contacto"] as const;
 
 const NAV_ITEMS = [
-  { label: "Inicio", href: "/#hero", sectionId: "hero" },
-  { label: "Quiénes somos", href: "/#quienes-somos", sectionId: "quienes-somos" },
-  { label: "Beneficios", href: "/#beneficios", sectionId: "beneficios" },
-  { label: "Cómo funciona", href: "/#como-funciona", sectionId: "como-funciona" },
+  { label: "Inicio", href: "/", sectionId: null },
+  { label: "Cómo funciona", href: "/como-funciona", sectionId: null },
   { label: "Servicios", href: "/servicios", sectionId: null },
   { label: "Contacto", href: "/#contacto", sectionId: "contacto" },
 ] as const;
 
 type NavItem = (typeof NAV_ITEMS)[number];
 type SectionId = (typeof SECTION_IDS)[number];
-type FocusTarget = SectionId | "page";
+type FocusTarget = SectionId | "hero" | "page";
 
 type NavigationFocusRequest = readonly [
   target: FocusTarget,
@@ -245,6 +243,9 @@ export default function ResponsiveHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeForExternalNavigation}
+              data-analytics-event="header-whatsapp"
+              data-analytics-surface="header-compact"
+              data-analytics-destination="whatsapp"
               className={`flex min-h-11 items-center gap-2 rounded-[8px] px-3 py-3 text-white no-underline hover:bg-white/5 ${FOCUS_RING}`}
             >
               <FaWhatsapp aria-hidden="true" className="size-5" />
@@ -257,6 +258,9 @@ export default function ResponsiveHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeForExternalNavigation}
+              data-analytics-event="header-login"
+              data-analytics-surface="header-compact"
+              data-analytics-destination="portal-login"
               className={`mt-2 cta cta-secondary w-full transition ${FOCUS_RING}`}
             >
               Iniciar sesión
@@ -268,6 +272,9 @@ export default function ResponsiveHeader() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeForExternalNavigation}
+              data-analytics-event="header-register"
+              data-analytics-surface="header-compact"
+              data-analytics-destination="portal-registro"
               className={`mt-2 cta cta-primary w-full transition ${FOCUS_RING_ON_PRIMARY}`}
             >
               Registrarse
@@ -359,6 +366,9 @@ export default function ResponsiveHeader() {
             rel="noopener noreferrer"
             aria-label="WhatsApp de LEM-BOX"
             title="WhatsApp"
+            data-analytics-event="header-whatsapp"
+            data-analytics-surface="header-desktop"
+            data-analytics-destination="whatsapp"
             className={`inline-flex size-11 items-center justify-center icon-button no-underline transition ${FOCUS_RING}`}
           >
             <FaWhatsapp aria-hidden="true" className="size-5" />
@@ -367,6 +377,9 @@ export default function ResponsiveHeader() {
             href="https://portal.lem-box.com/acceder"
             target="_blank"
             rel="noopener noreferrer"
+            data-analytics-event="header-login"
+            data-analytics-surface="header-desktop"
+            data-analytics-destination="portal-login"
             className={`cta cta-secondary transition ${FOCUS_RING}`}
           >
             Iniciar sesión
@@ -375,6 +388,9 @@ export default function ResponsiveHeader() {
             href="https://portal.lem-box.com/registro"
             target="_blank"
             rel="noopener noreferrer"
+            data-analytics-event="header-register"
+            data-analytics-surface="header-desktop"
+            data-analytics-destination="portal-registro"
             className={`cta cta-primary transition ${FOCUS_RING_ON_PRIMARY}`}
           >
             Registrarse

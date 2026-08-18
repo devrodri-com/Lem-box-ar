@@ -72,6 +72,14 @@ export const SEO_ROUTES = [
     uruguayEquivalentPath: "/",
   },
   {
+    path: "/como-funciona",
+    marketScope: "ARGENTINA_ONLY",
+    indexable: true,
+    sitemap: true,
+    changeFrequency: "monthly",
+    priority: 0.9,
+  },
+  {
     path: "/servicios",
     marketScope: "RECIPROCAL",
     indexable: true,

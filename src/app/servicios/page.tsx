@@ -1,9 +1,10 @@
 // src/app/servicios/page.tsx
 import type { Metadata } from "next";
+import Link from "next/link";
 import { reciprocalAlternates, regionalOpenGraph } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Servicios | LEM-BOX",
+  title: "Servicios logísticos desde Miami",
   description:
     "Servicios logísticos integrales en EE.UU. y envíos internacionales. Infraestructura en Miami, servicios personalizados, fulfillment 3PL y despachos a Argentina y dentro de EE.UU.",
   alternates: reciprocalAlternates("/servicios"),
@@ -79,7 +80,7 @@ export default function ServiciosPage() {
       </section>
 
       {/* Bloque 3 – Fulfillment para e‑commerce (3PL) */}
-      <section className="py-14 sm:py-16 section-divider">
+      <section id="fulfillment" className="scroll-mt-24 py-14 sm:py-16 section-divider">
         <div className="mx-auto max-w-7xl px-6 grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
           <div className="md:col-span-5">
             <h2 className="h-sub">
@@ -129,52 +130,26 @@ export default function ServiciosPage() {
         </div>
       </section>
 
-      {/* Referencia operativa */}
+      {/* El proceso vive en una única fuente operativa. */}
       <section className="py-14 sm:py-16 section-divider">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="h-sub mb-6">
-            Referencia operativa
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse data-table">
-              <thead>
-                <tr className="data-table-head">
-                  <th scope="col" className="py-3 pr-4 w-[24%]">Etapa</th>
-                  <th scope="col" className="py-3 pr-4 w-[48%]">Cómo funciona</th>
-                  <th scope="col" className="py-3 w-[28%]">Referencia</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="data-table-row hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pr-4">Recepción en Miami</td>
-                  <td className="py-3 pr-4">Foto del contenido y de la etiqueta, nombre y tracking visible</td>
-                  <td className="py-3">Se registra en el sistema</td>
-                </tr>
-                <tr className="data-table-row hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pr-4">Consolidación y reempaque</td>
-                  <td className="py-3 pr-4">Incluidos según las necesidades de la operación</td>
-                  <td className="py-3">Antes del despacho</td>
-                </tr>
-                <tr className="data-table-row hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pr-4">Salida a Argentina</td>
-                  <td className="py-3 pr-4">Una salida semanal</td>
-                  <td className="py-3">Cierre jueves 12 PM, hora de Miami</td>
-                </tr>
-                <tr className="data-table-row hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pr-4">Seguimiento</td>
-                  <td className="py-3 pr-4">Recibido, consolidado, en tránsito y en destino</td>
-                  <td className="py-3">Se actualiza por estados, sin actualización continua</td>
-                </tr>
-                <tr className="data-table-row-last hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pr-4">Coordinación en Argentina</td>
-                  <td className="py-3 pr-4">Entrega, retiro, agencia o transporte acordado</td>
-                  <td className="py-3">Normalmente comienza entre martes y miércoles de la semana siguiente</td>
-                </tr>
-              </tbody>
-            </table>
-            <p className="mt-3 legal-note">
-              Después del cierre se despacha y se realizan controles. La referencia de martes o miércoles no es una garantía: puede variar por controles, condiciones operativas y disponibilidad, y requiere coordinación individual.
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-6 md:grid-cols-12 md:items-center">
+          <div className="md:col-span-8">
+            <p className="eyebrow">Ruta operativa</p>
+            <h2 className="h-sub mt-3">El recorrido completo, etapa por etapa</h2>
+            <p className="mt-3 body-copy max-w-2xl">
+              La recepción, consolidación, salida, seguimiento y coordinación final se explican en una sola guía, con sus referencias y condiciones.
             </p>
+          </div>
+          <div className="md:col-span-4 md:text-right">
+            <Link
+              href="/como-funciona"
+              className="cta cta-secondary fx"
+              data-analytics-event="services-process"
+              data-analytics-surface="services-process-teaser"
+              data-analytics-destination="/como-funciona"
+            >
+              Ver cómo funciona
+            </Link>
           </div>
         </div>
       </section>
@@ -200,7 +175,9 @@ export default function ServiciosPage() {
           <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
             <a
               href="https://portal.lem-box.com/registro"
-              data-umami-event="cta-servicios-register"
+              data-analytics-event="services-register"
+              data-analytics-surface="services-final"
+              data-analytics-destination="portal-registro"
               className="cta cta-primary transition-colors fx-on-primary"
             >
               Crear cuenta
@@ -209,7 +186,9 @@ export default function ServiciosPage() {
               href="https://wa.me/17544653318"
               target="_blank"
               rel="noopener noreferrer"
-              data-umami-event="cta-servicios-whatsapp"
+              data-analytics-event="services-whatsapp"
+              data-analytics-surface="services-final"
+              data-analytics-destination="whatsapp"
               className="cta cta-operational-outline transition-colors fx"
             >
               Escribir por WhatsApp

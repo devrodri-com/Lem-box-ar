@@ -24,7 +24,17 @@ export default function ContactSection() {
             <div>
               <dt className="inline font-medium">WhatsApp: </dt>
               <dd className="inline">
-                <a href="https://wa.me/17544653318" className="link-inline fx" rel="noopener noreferrer" target="_blank">+1 (754) 465 3318</a>
+                <a
+                  href="https://wa.me/17544653318"
+                  className="link-inline fx"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  data-analytics-event="contact-details-whatsapp"
+                  data-analytics-surface="home-contact"
+                  data-analytics-destination="whatsapp"
+                >
+                  +1 (754) 465 3318
+                </a>
               </dd>
             </div>
             <div>

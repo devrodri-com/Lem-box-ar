@@ -19,7 +19,15 @@ const UY_SITE_URL = "https://lem-box.com.uy";
 const X_DEFAULT_URL = "https://lem-box.com/acceder";
 const OG_IMAGE_PATH = "/og-lem-box-ar.jpg";
 const THEME_COLOR = "#02120F";
-const EXPECTED_CURRENT_ROUTES = ["/", "/servicios", "/privacidad", "/terminos"];
+const EXPECTED_CURRENT_ROUTES = [
+  "/",
+  "/como-funciona",
+  "/servicios",
+  "/privacidad",
+  "/terminos",
+];
+const EXPECTED_RECIPROCAL_ROUTES = ["/", "/servicios", "/privacidad", "/terminos"];
+const EXPECTED_ARGENTINA_ONLY_ROUTES = ["/como-funciona"];
 
 const failures = [];
 const fail = (rule, detail) => failures.push(`${rule}: ${detail}`);
@@ -113,8 +121,11 @@ function checkRouteRegistry() {
     fail("phase-public-routes", `rutas ${actual.join(", ")}; esperadas ${expected.join(", ")}`);
   }
   for (const route of ROUTES) {
-    if (EXPECTED_CURRENT_ROUTES.includes(route.path) && route.marketScope !== "RECIPROCAL") {
-      fail("phase-route-classification", `${route.path} debe ser RECIPROCAL en AR-03B1`);
+    if (EXPECTED_RECIPROCAL_ROUTES.includes(route.path) && route.marketScope !== "RECIPROCAL") {
+      fail("phase-route-classification", `${route.path} debe ser RECIPROCAL`);
+    }
+    if (EXPECTED_ARGENTINA_ONLY_ROUTES.includes(route.path) && route.marketScope !== "ARGENTINA_ONLY") {
+      fail("phase-route-classification", `${route.path} debe ser ARGENTINA_ONLY`);
     }
   }
 }
@@ -271,6 +282,17 @@ function checkManifestAndVisibleCopy() {
   const about = read("src/components/AboutSection.tsx");
   if (!about.includes("EE.UU. ↔ Argentina") || about.includes("EE.UU. ↔ Uruguay")) {
     fail("market-copy", "AboutSection debe publicar únicamente Argentina");
+  }
+  const layout = read("src/app/layout.tsx");
+  if (!layout.includes('default: "Envíos desde Miami a Argentina — LEM-BOX"')) {
+    fail("home-search-intent", "el título de Home debe priorizar Envíos desde Miami a Argentina");
+  }
+  for (const path of ["como-funciona", "servicios", "privacidad", "terminos"]) {
+    const source = read(`src/app/${path}/page.tsx`);
+    const pageTitle = source.match(/title:\s*"([^"]+)"/)?.[1] ?? "";
+    if (/LEM-BOX/i.test(pageTitle)) {
+      fail("title-brand-duplication", `${path}: el template ya agrega la marca`);
+    }
   }
 }
 

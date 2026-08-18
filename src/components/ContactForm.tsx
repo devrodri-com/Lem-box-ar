@@ -10,7 +10,9 @@ export default function ContactForm() {
         aria-busy={pending}
         disabled={pending}
         className="w-full cta cta-operational h-12 transition-colors fx-on-operational disabled:opacity-70 disabled:cursor-not-allowed"
-        data-umami-event="contact-submit"
+        data-analytics-event="contact-submit"
+        data-analytics-surface="home-contact-form"
+        data-analytics-destination="/api/contact"
       >
         {pending ? (
           <span className="inline-flex items-center gap-2">
@@ -156,7 +158,9 @@ export default function ContactForm() {
         target="_blank"
         rel="noopener noreferrer"
         className="mt-4 w-full cta cta-operational-outline transition-colors fx"
-        data-umami-event="contact-whatsapp"
+        data-analytics-event="contact-whatsapp"
+        data-analytics-surface="home-contact-form"
+        data-analytics-destination="whatsapp"
         aria-label="Escribir por WhatsApp (ver Política de Privacidad en /privacidad)"
       >
         Escribir por WhatsApp <span className="sr-only">Se abre en una pestaña nueva</span>

@@ -22,10 +22,9 @@ export default function Footer() {
           <nav aria-label="Enlaces del sitio">
             <div className="footer-heading">Sitio</div>
             <ul className="mt-2 space-y-1 text-sm">
-              <li><Link href={{ pathname: "/", hash: "hero" }} className="link-quiet fx transition-colors duration-200">Inicio</Link></li>
-              <li><Link href={{ pathname: "/", hash: "quienes-somos" }} className="link-quiet fx transition-colors duration-200">Quiénes somos</Link></li>
-              <li><Link href={{ pathname: "/", hash: "beneficios" }} className="link-quiet fx transition-colors duration-200">Beneficios</Link></li>
-              <li><Link href={{ pathname: "/", hash: "como-funciona" }} className="link-quiet fx transition-colors duration-200">Cómo funciona</Link></li>
+              <li><Link href="/" className="link-quiet fx transition-colors duration-200">Inicio</Link></li>
+              <li><Link href="/como-funciona" className="link-quiet fx transition-colors duration-200">Cómo funciona</Link></li>
+              <li><Link href="/servicios" className="link-quiet fx transition-colors duration-200">Servicios</Link></li>
               <li><Link href={{ pathname: "/", hash: "contacto" }} className="link-quiet fx transition-colors duration-200">Contacto</Link></li>
             </ul>
           </nav>
@@ -39,6 +38,9 @@ export default function Footer() {
                   href="https://wa.me/17544653318"
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-analytics-event="footer-whatsapp"
+                  data-analytics-surface="footer"
+                  data-analytics-destination="whatsapp"
                   className="link-quiet fx transition-colors duration-200"
                 >
                   +1 (754) 465-3318 (WhatsApp)
